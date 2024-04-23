@@ -3,7 +3,7 @@ package Entities;
 import java.util.ArrayList;
 
 public class Patient {
-  private String name;
-  private String cpf;
+  public String name;
+  public String cpf;
   private ArrayList<Appointments> appointments;
 }

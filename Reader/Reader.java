@@ -1,4 +1,4 @@
-package recuperacao.Reader;
+package Reader;
 
 public class Reader {
 

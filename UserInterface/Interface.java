@@ -1,13 +1,14 @@
+package UserInterface;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import Entities.Doctor;
 import Entities.Patient;
 
-public class UserInterface {
+public class Interface {
   UserScanner userScanner;
 
-  public UserInterface() {
+  public Interface() {
     this.userScanner = new UserScanner();
   }
 
@@ -142,11 +143,13 @@ public class UserInterface {
           // getaAppByP
           break;
         case 6:
-
+          Doctor doctorToGetMissingPatients = this.getDoctor(doctors);
+          int months = this.userScanner.getInt("Digite a quantidade de meses para filtrar");
           // getMissingP
           break;
         case 7:
-          // sair
+          System.out.println("Obrigado por utilizar nosso sistema!");
+          System.out.println("Saindo...");
           break;
 
       }

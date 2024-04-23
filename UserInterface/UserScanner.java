@@ -15,9 +15,15 @@ public class UserScanner {
       try {
         System.out.print(message + " => ");
         userInt = this.keyboard.nextInt();
+
+        if (userInt < 0) {
+          throw new Exception("O número não pode ser negativo");
+        }
+
         confirmed = true;
       } catch (Exception e) {
         System.out.println("Ocorreu um erro ao ler o número! Tente novamente");
+        System.out.println(e.getMessage());
       }
     } while (!confirmed);
 

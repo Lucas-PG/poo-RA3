@@ -17,10 +17,23 @@ public class Messages {
     return message;
   }
 
+  public static ArrayList<Integer> getPossibleChoicesList() {
+    return new ArrayList<Integer>() {
+      {
+        add(1);
+        add(2);
+        add(3);
+        add(4);
+        add(5);
+        add(6);
+        add(7);
+      }
+    };
+  }
+
   public static String getDoctorChoiceMessage(ArrayList<Doctor> doctors) {
     String message = "Escolha um médico (Digite o respectivo código):\n";
-    for (int i = 0; i < doctors.size(); i++) {
-      Doctor doctor = doctors.get(i);
+    for (Doctor doctor : doctors) {
       message += doctor.code + " - " + doctor.name + "\n";
     }
 
@@ -29,8 +42,7 @@ public class Messages {
 
   public static String getPatientChoiceMessage(ArrayList<Patient> patients) {
     String message = "Escolha um médico (Digite o respectivo código):\n";
-    for (int i = 0; i < patients.size(); i++) {
-      Patient patient = patients.get(i);
+    for (Patient patient : patients) {
       message += patient.cpf + " - " + patient.name + "\n";
     }
 

@@ -1,6 +1,9 @@
 Package entidades
 Medico, Paciente, Consulta
 
+Talvez a gente tenha que pegar aquele método estático de pegar todos os códigos de doutor e usar isso no construtor pra não deixar registrar um médico com o mesmo código que o outro
+E fazer isso com os pacientes tmb
+
 Classe reader
 pegar o arquivo
 ler o arquivo

@@ -5,5 +5,5 @@ import java.util.ArrayList;
 public class Patient {
   public String name;
   public String cpf;
-  private ArrayList<Appointments> appointments;
+  private ArrayList<Appointment> appointments;
 }

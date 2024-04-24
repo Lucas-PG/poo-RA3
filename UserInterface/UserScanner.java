@@ -1,3 +1,5 @@
+package UserInterface;
+
 import java.util.Scanner;
 
 public class UserScanner {

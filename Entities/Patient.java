@@ -15,6 +15,28 @@ public class Patient {
     this.appointments = new ArrayList<Appointment>();
   }
 
+  public static ArrayList<String> getAvailableCpfs(ArrayList<Patient> patients) {
+    ArrayList<String> cpfList = new ArrayList<String>();
+
+    for (Patient patient : patients) {
+      cpfList.add(patient.cpf);
+    }
+
+    return cpfList;
+  };
+
+  public static Patient getPatientByCpf(String cpf, ArrayList<Patient> patients) {
+    Patient patientToReturn = new Patient("", ""); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
+
+    for (Patient patient : patients) {
+      if (patient.cpf.equals(cpf)) {
+        patientToReturn = patient;
+      }
+    }
+
+    return patientToReturn;
+  }
+
   // Quais são todos os médicos que um determinado paciente já consultou ou tem
   // consulta agendada?
   public ArrayList<Doctor> getDoctorsByPatient() {

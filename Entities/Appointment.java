@@ -16,7 +16,9 @@ public class Appointment {
     this.patient = patient;
 
     patient.addApointment(this);
-    // doctor.addAppointment(this);
+    if (!doctor.hasPatient(patient)) {
+      doctor.addPatient(this.patient);
+    }
   }
 
 }

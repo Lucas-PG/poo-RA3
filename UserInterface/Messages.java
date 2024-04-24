@@ -2,6 +2,7 @@ package UserInterface;
 
 import java.util.ArrayList;
 
+import Entities.Appointment;
 import Entities.Doctor;
 import Entities.Patient;
 
@@ -33,21 +34,46 @@ public class Messages {
     };
   }
 
-  public static String getDoctorChoiceMessage(ArrayList<Doctor> doctors) {
-    String message = "Escolha um médico (Digite o respectivo código):\n";
+  public static String getDoctorsListMessage(ArrayList<Doctor> doctors) {
+    String message = "";
+
     for (Doctor doctor : doctors) {
-      message += doctor.code + " - " + doctor.name + "\n";
+      message += "Código: " + doctor.code + " > " + doctor.name + "\n";
     }
 
     return message;
   }
 
-  public static String getPatientChoiceMessage(ArrayList<Patient> patients) {
-    String message = "Escolha um médico (Digite o respectivo código):\n";
+  public static String getPatientsListMessage(ArrayList<Patient> patients) {
+    String message = "";
+
     for (Patient patient : patients) {
-      message += patient.cpf + " - " + patient.name + "\n";
+      message += "CPF: " + patient.cpf + " > " + patient.name + "\n";
     }
 
+    return message;
+  }
+
+  public static String getAppointmentsListMessage(ArrayList<Appointment> appointments) {
+    String message = "";
+
+    for (Appointment appointment : appointments) {
+      message += "Data - hora: " + appointment.date + " - " + appointment.time + " > Médico:" + appointment.doctor.name
+          + " > Paciente:" + appointment.patient.name + "\n";
+    }
+
+    return message;
+  }
+
+  public static String getDoctorChoiceMessage(ArrayList<Doctor> doctors) {
+    String message = "\nEscolha um médico (Digite o respectivo código):\n";
+    message += getDoctorsListMessage(doctors);
+    return message;
+  }
+
+  public static String getPatientChoiceMessage(ArrayList<Patient> patients) {
+    String message = "\nEscolha um paciente (Digite o respectivo cpf):\n";
+    message += getPatientChoiceMessage(patients);
     return message;
   }
 }

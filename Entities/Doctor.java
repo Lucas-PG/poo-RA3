@@ -14,8 +14,34 @@ public class Doctor {
     this.code = code;
   }
 
+  public static ArrayList<Integer> getAvailableDoctorCodes(ArrayList<Doctor> doctors) {
+    ArrayList<Integer> codesList = new ArrayList<Integer>();
+
+    for (Doctor doctor : doctors) {
+      codesList.add(doctor.code);
+    }
+
+    return codesList;
+  };
+
+  public static Doctor getDoctorByCode(int code, ArrayList<Doctor> doctors) {
+    Doctor doctorToReturn = new Doctor("", 0); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
+
+    for (Doctor doctor : doctors) {
+      if (doctor.code == code) {
+        doctorToReturn = doctor;
+      }
+    }
+
+    return doctorToReturn;
+  }
+
   public void addPatient(Patient patient) {
     patients.add(patient);
+  }
+
+  public boolean hasPatient(Patient patient) {
+    return this.patients.contains(patient);
   }
 
   // public void addApointment(Appointments appointment){

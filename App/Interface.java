@@ -1,4 +1,4 @@
-package recuperacao.App;
+package App;
 
 public class Interface {
 

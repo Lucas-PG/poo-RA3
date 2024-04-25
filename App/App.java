@@ -13,13 +13,13 @@ import UserInterface.Interface;
 public class App {
   public static void main(String args[]) {
     Reader reader = new Reader("medicos.csv", "pacientes.csv", "consultas.csv");
-    Interface interface1 = new Interface();
+    Interface userInterface = new Interface();
     ArrayList<Doctor> doctors = new ArrayList<Doctor>();
     ArrayList<Patient> patients = new ArrayList<Patient>();
     ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
     reader.read(doctors, patients, appointments);
 
-    interface1.startUserInteraction(doctors, patients);
+    userInterface.startUserInteraction(doctors, patients);
   }
 }

@@ -2,11 +2,9 @@ package UserInterface;
 
 import java.util.Scanner;
 
+@SuppressWarnings("resource")
 public class UserScanner {
-  Scanner keyboard;
-
   public UserScanner() {
-    this.keyboard = new Scanner(System.in);
   }
 
   public int getInt(String message) {
@@ -14,9 +12,11 @@ public class UserScanner {
     boolean confirmed = false;
 
     do {
+      Scanner keyboard = new Scanner(System.in);
+
       try {
         System.out.print(message + " => ");
-        userInt = this.keyboard.nextInt();
+        userInt = keyboard.nextInt();
 
         if (userInt < 0) {
           throw new Exception("O número não pode ser negativo");
@@ -37,9 +37,11 @@ public class UserScanner {
     boolean confirmed = false;
 
     do {
+      Scanner keyboard = new Scanner(System.in);
+
       try {
         System.out.print(message + " => ");
-        userCpf = this.keyboard.next();
+        userCpf = keyboard.next();
 
         if (userCpf.length() < 11) {
           throw new Exception("O cpf está incompleto");
@@ -61,9 +63,11 @@ public class UserScanner {
     String datePattern = "\\d{4}-\\d{2}-\\d{2}";
 
     do {
+      Scanner keyboard = new Scanner(System.in);
+
       try {
         System.out.print(message + " => ");
-        userDate = this.keyboard.next();
+        userDate = keyboard.next();
 
         if (userDate.length() < 10) {
           throw new Exception("A data está incompleta");

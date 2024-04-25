@@ -60,6 +60,51 @@ public class Interface {
     return chosenOption;
   }
 
+  private void firstOption(ArrayList<Doctor> doctors) {
+    Doctor doctor = this.getDoctor(doctors);
+
+    System.out.println("Aqui está a lista de pacientes de " + doctor.name + ":");
+    System.out.println(Messages.getPatientsListMessage(doctor.getPatients()));
+  }
+
+  private void secondOption(ArrayList<Doctor> doctors) {
+    Doctor doctor = this.getDoctor(doctors);
+    String startDate = this.userScanner.getDate("Digite a data de início");
+    String endDate = this.userScanner.getDate("Digite a data de fim");
+    // Appointments.getAppointmentsByPeriod(doctorToGetByPeriod, startDate,
+    // endDate);
+  }
+
+  private void thirdOption(ArrayList<Patient> patients) {
+    Patient patient = this.getPatient(patients);
+
+    System.out.println("Aqui está a lista de médicos que " + patient.name + " já consultou:");
+    System.out.println(Messages.getDoctorsListMessage(patient.getDoctorsByPatient()));
+  }
+
+  private void fourthOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
+    Patient patient = this.getPatient(patients);
+    Doctor doctor = this.getDoctor(doctors);
+
+    System.out.println("Aqui está a lista de consultas de " + patient.name + " com o médico(a) " + doctor.name + ":");
+    System.out.println(Messages.getAppointmentsListMessage(patient.getAppointmentsByDoctor(doctor)));
+  }
+
+  private void fitfhOption(ArrayList<Patient> patients) {
+    Patient patient = this.getPatient(patients);
+
+    System.out.println("Aqui está a lista de consultas marcadas de " + patient.name + ":");
+    System.out.println(Messages.getAppointmentsListMessage(patient.getFutureAppointments()));
+  }
+
+  private void sixthOption(ArrayList<Doctor> doctors) {
+    Doctor doctor = this.getDoctor(doctors);
+    int months = this.userScanner.getInt("Digite a quantidade de meses para filtrar");
+
+    System.out.println("Aqui estão os pacientes que não se consultam com " + doctor.name + " há " + months + " meses:");
+    System.out.println(Messages.getPatientsListMessage(doctor.getMissingPatients(months)));
+  }
+
   // Depois melhoramos os nomes dessas variáveis, deixa essas por enquanto
   public void startUserInteraction(ArrayList<Doctor> doctors, ArrayList<Patient> patients) {
     int chosenOption = -1;
@@ -69,35 +114,22 @@ public class Interface {
 
       switch (chosenOption) {
         case 1:
-          Doctor doctorToGetPatients = this.getDoctor(doctors);
-
-          System.out.println("Aqui está a lista de pacientes de " + doctorToGetPatients.name + ":");
-          System.out.println(Messages.getPatientsListMessage(doctorToGetPatients.getPatients()));
+          this.firstOption(doctors);
           break;
         case 2:
-          Doctor doctorToGetByPeriod = this.getDoctor(doctors);
-          String startDate = this.userScanner.getDate("Digite a data de início");
-          String endDate = this.userScanner.getDate("Digite a data de fim");
-          // Appointments.getAppointmentsByPeriod(doctorToGetByPeriod, startDate,
-          // endDate);
+          this.secondOption(doctors);
           break;
         case 3:
-          Patient patientToGetDoctors = this.getPatient(patients);
-          // getDoctorsByP
+          this.thirdOption(patients);
           break;
         case 4:
-          Patient patientToGetAppointmentsByDoctor = this.getPatient(patients);
-          Doctor doctorToGetAppointmentsByDoctor = this.getDoctor(doctors);
-          // getAppByD
+          this.fourthOption(patients, doctors);
           break;
         case 5:
-          Patient patientToGetAppointments = this.getPatient(patients);
-          // getaAppByP
+          this.fitfhOption(patients);
           break;
         case 6:
-          Doctor doctorToGetMissingPatients = this.getDoctor(doctors);
-          int months = this.userScanner.getInt("Digite a quantidade de meses para filtrar");
-          // getMissingP
+          this.sixthOption(doctors);
           break;
         case 7:
           System.out.println("Obrigado por utilizar nosso sistema!");

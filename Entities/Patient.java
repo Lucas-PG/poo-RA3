@@ -45,7 +45,9 @@ public class Patient {
 
     for (Appointment a : appointments) {
       if (a.patient == this) {
-        doctorsByPatient.add(a.doctor);
+        if (!doctorsByPatient.contains(a.doctor)) {
+          doctorsByPatient.add(a.doctor);
+        }
       }
     }
 
@@ -69,7 +71,7 @@ public class Patient {
     return appointmentsByDoctor;
   }
 
-  public ArrayList<Appointment> getFutureAppointment() {
+  public ArrayList<Appointment> getFutureAppointments() {
     ArrayList<Appointment> futureAppointments = new ArrayList<Appointment>();
     for (Appointment a : appointments) {
       if (a.date.isAfter(LocalDate.now()) || (a.date.isEqual(LocalDate.now()) && a.time.isAfter(LocalTime.now()))) {

@@ -73,7 +73,7 @@ public class Messages {
 
   public static String getPatientChoiceMessage(ArrayList<Patient> patients) {
     String message = "\nEscolha um paciente (Digite o respectivo cpf):\n";
-    message += getPatientChoiceMessage(patients);
+    message += getPatientsListMessage(patients);
     return message;
   }
 }

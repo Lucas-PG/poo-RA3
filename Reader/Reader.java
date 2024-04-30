@@ -38,7 +38,7 @@ public class Reader {
       buffer.close();
 
     } catch (Exception e) {
-      System.out.println("Ocorreu um erro ao ler o arquivo!");
+      System.out.println("Ocorreu um erro ao ler o arquivo dos médicos!");
       System.out.println(e.getMessage());
     }
 
@@ -62,7 +62,7 @@ public class Reader {
       buffer.close();
 
     } catch (Exception e) {
-      System.out.println("Ocorreu um erro ao ler o arquivo!");
+      System.out.println("Ocorreu um erro ao ler o arquivo dos pacientes!");
       System.out.println(e.getMessage());
     }
   }
@@ -78,6 +78,7 @@ public class Reader {
         String linha = buffer.readLine();
         String[] tokens = linha.split(",");
 
+        // TODO: fix this bullshit
         int doctorCode = Integer.parseInt(tokens[2]);
         String patientCpf = tokens[3];
 
@@ -92,8 +93,9 @@ public class Reader {
       buffer.close();
 
     } catch (Exception e) {
-      System.out.println("Ocorreu um erro ao ler o arquivo!");
+      System.out.println("Ocorreu um erro ao ler o arquivo das consultas!");
       System.out.println(e.getMessage());
+      e.printStackTrace();
     }
   }
 

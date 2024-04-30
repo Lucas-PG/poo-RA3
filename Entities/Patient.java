@@ -83,7 +83,7 @@ public class Patient {
 
   }
 
-  public void addApointment(Appointment appointment) {
+  public void addAppointment(Appointment appointment) {
     appointments.add(appointment);
   }
 

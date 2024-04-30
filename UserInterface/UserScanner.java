@@ -66,7 +66,7 @@ public class UserScanner {
       Scanner keyboard = new Scanner(System.in);
 
       try {
-        System.out.print(message + " => ");
+        System.out.print(message + " (YYYY-MM-DD) => ");
         userDate = keyboard.next();
 
         if (userDate.length() < 10) {

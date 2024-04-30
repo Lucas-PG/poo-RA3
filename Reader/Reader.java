@@ -25,7 +25,7 @@ public class Reader {
     try {
       FileReader file = new FileReader(this.doctorsFile);
       BufferedReader buffer = new BufferedReader(file);
-      String header = buffer.readLine();
+      buffer.readLine();
 
       while (buffer.ready()) {
         String linha = buffer.readLine();
@@ -34,18 +34,22 @@ public class Reader {
         Doctor doctor = new Doctor(tokens[0], Integer.parseInt(tokens[1]));
         doctors.add(doctor);
       }
+      
+      buffer.close();
 
     } catch (Exception e) {
       System.out.println("Ocorreu um erro ao ler o arquivo!");
       System.out.println(e.getMessage());
     }
+
+    
   }
 
   private void readPatients(ArrayList<Patient> patients) {
     try {
       FileReader file = new FileReader(this.patientsFile);
       BufferedReader buffer = new BufferedReader(file);
-      String header = buffer.readLine();
+      buffer.readLine();
 
       while (buffer.ready()) {
         String linha = buffer.readLine();
@@ -54,6 +58,8 @@ public class Reader {
         Patient patient = new Patient(tokens[0], tokens[1]);
         patients.add(patient);
       }
+
+      buffer.close();
 
     } catch (Exception e) {
       System.out.println("Ocorreu um erro ao ler o arquivo!");
@@ -66,7 +72,7 @@ public class Reader {
     try {
       FileReader file = new FileReader(this.appointmentsFile);
       BufferedReader buffer = new BufferedReader(file);
-      String header = buffer.readLine();
+      buffer.readLine();
 
       while (buffer.ready()) {
         String linha = buffer.readLine();
@@ -83,6 +89,8 @@ public class Reader {
         appointments.add(appointment);
       }
 
+      buffer.close();
+
     } catch (Exception e) {
       System.out.println("Ocorreu um erro ao ler o arquivo!");
       System.out.println(e.getMessage());
@@ -90,8 +98,8 @@ public class Reader {
   }
 
   public void read(ArrayList<Doctor> doctors, ArrayList<Patient> patients, ArrayList<Appointment> appointments) {
-    this.readDoctors(doctors);
     this.readPatients(patients);
+    this.readDoctors(doctors);
     readAppointments(appointments, patients, doctors);
   }
 }

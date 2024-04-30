@@ -7,7 +7,7 @@ public class Doctor {
   public String name;
   public int code;
   private ArrayList<Patient> patients = new ArrayList<Patient>();
-  // private ArrayList<Appointments> appointments = new ArrayList<Appointments>();
+  private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
   public Doctor(String name, int code) {
     this.name = name;
@@ -25,7 +25,7 @@ public class Doctor {
   };
 
   public static Doctor getDoctorByCode(int code, ArrayList<Doctor> doctors) {
-    Doctor doctorToReturn = new Doctor("", 0); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
+    Doctor doctorToReturn = new Doctor("", 0); 
 
     for (Doctor doctor : doctors) {
       if (doctor.code == code) {
@@ -44,9 +44,9 @@ public class Doctor {
     return this.patients.contains(patient);
   }
 
-  // public void addApointment(Appointments appointment){
-  // appointments.add(appointment);
-  // }
+  public void addAppointment(Appointment appointment){
+    appointments.add(appointment);
+  }
 
   // Quais são todos os pacientes de um determinado médico?
   public ArrayList<Patient> getPatients() {
@@ -59,12 +59,23 @@ public class Doctor {
    */
   public ArrayList<Patient> getMissingPatients(int months) {
     ArrayList<Patient> missingPatients = new ArrayList<Patient>();
-    LocalDate currentDate = LocalDate.now();
 
     for (Patient p : patients) {
-      if (currentDate.getMonthValue() - p.appointments.get(p.appointments.size() - 1).date.getMonthValue() > months) {
+
+      int smallerDistance = p.appointments.get(0).getMonthDiffFromCurrentDate();
+
+      for(Appointment a: p.appointments){
+        int distance = a.getMonthDiffFromCurrentDate();
+
+        if (distance < smallerDistance && distance > 0){
+          smallerDistance = distance;
+        }
+      }
+
+      if (smallerDistance >= months){
         missingPatients.add(p);
       }
+    
     }
 
     return missingPatients;
@@ -80,11 +91,11 @@ public class Doctor {
   public ArrayList<Appointment> getAppointmentsByPeriod(LocalDate startDate, LocalDate endDate) {
     ArrayList<Appointment> appointmentsByPeriod = new ArrayList<Appointment>();
 
-    // for(Appointments a: appointments){
-    // if(startDate.isBefore(a.date) && endDate.isAfter(a.date)){
-    // appointmentsByPeriod.add(a);
-    // }
-    // }
+    for(Appointment a: appointments){
+    if(startDate.isBefore(a.date) && endDate.isAfter(a.date)){
+    appointmentsByPeriod.add(a);
+    }
+    }
     return appointmentsByPeriod;
   }
 

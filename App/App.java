@@ -1,7 +1,5 @@
 package App;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 import Entities.Appointment;
@@ -9,6 +7,7 @@ import Entities.Doctor;
 import Entities.Patient;
 import Reader.Reader;
 import UserInterface.Interface;
+import UserInterface.UserScanner;
 
 public class App {
   public static void main(String args[]) {

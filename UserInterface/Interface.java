@@ -1,5 +1,6 @@
 package UserInterface;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Entities.Doctor;
@@ -71,8 +72,10 @@ public class Interface {
     Doctor doctor = this.getDoctor(doctors);
     String startDate = this.userScanner.getDate("Digite a data de início");
     String endDate = this.userScanner.getDate("Digite a data de fim");
-    // Appointments.getAppointmentsByPeriod(doctorToGetByPeriod, startDate,
-    // endDate);
+    
+    System.out.println("Aqui está a lista de consultas do doutor " + doctor.name + "\n");
+    System.out.println("No período entre " + startDate + " e " + endDate + ":\n");
+    System.out.println(Messages.getAppointmentsListMessage(doctor.getAppointmentsByPeriod(LocalDate.parse(startDate), LocalDate.parse(endDate))));
   }
 
   private void thirdOption(ArrayList<Patient> patients) {

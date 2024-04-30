@@ -2,6 +2,7 @@ package Entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 
 public class Appointment {
   public LocalDate date;
@@ -15,10 +16,20 @@ public class Appointment {
     this.doctor = doctor;
     this.patient = patient;
 
-    patient.addApointment(this);
+    patient.addAppointment(this);
+    doctor.addAppointment(this);
     if (!doctor.hasPatient(patient)) {
       doctor.addPatient(this.patient);
     }
+  }
+
+  public int getMonthDiffFromCurrentDate(){
+    LocalDate currentDate = LocalDate.now();
+
+    Period period = Period.between(date, currentDate);
+    int distanceMonths = period.getYears() * 12 + period.getMonths();
+
+    return distanceMonths;
   }
 
 }

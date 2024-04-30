@@ -37,6 +37,10 @@ public class Messages {
   public static String getDoctorsListMessage(ArrayList<Doctor> doctors) {
     String message = "";
 
+    if(doctors.size() == 0) {
+      return "Nenhum doutor encontrado \n";
+    }
+
     for (Doctor doctor : doctors) {
       message += "Código: " + doctor.code + " > " + doctor.name + "\n";
     }
@@ -47,6 +51,10 @@ public class Messages {
   public static String getPatientsListMessage(ArrayList<Patient> patients) {
     String message = "";
 
+    if(patients.size() == 0){
+      return "Nenhum paciente encontrado \n";
+    }
+
     for (Patient patient : patients) {
       message += "CPF: " + patient.cpf + " > " + patient.name + "\n";
     }
@@ -56,6 +64,10 @@ public class Messages {
 
   public static String getAppointmentsListMessage(ArrayList<Appointment> appointments) {
     String message = "";
+
+    if(appointments.size() == 0){
+      return "Nenhuma consulta encontrada \n";
+    }
 
     for (Appointment appointment : appointments) {
       message += "Data - hora: " + appointment.date + " - " + appointment.time + " > Médico:" + appointment.doctor.name

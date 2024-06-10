@@ -17,10 +17,10 @@ public class Doctor implements Serializable {
     this.code = code;
 
     allDoctors.add(this);
-    try {
-      save("data/medicos/all.ser");
-    } catch (IOException e) {
-    }
+    // try {
+    //   save("data/medicos/all.ser");
+    // } catch (IOException e) {
+    // }
   }
 
   public static ArrayList<Integer> getAvailableDoctorCodes(ArrayList<Doctor> doctors) {
@@ -111,8 +111,15 @@ public class Doctor implements Serializable {
   public static void save(String file, ArrayList<Doctor> medicos) throws IOException {
     FileOutputStream arquivo = new FileOutputStream(file);
     ObjectOutputStream gravador = new ObjectOutputStream(medicos);
-    gravador.writeObject(allDoctors);
+    gravador.writeObject(medicos);
     gravador.close();
     arquivo.close();
+  }
+
+  public static ArrayList<Doctor> loadAll(String file) throws IOException, ClassNotFoundException {
+    try (FileInputStream arquivo = new FileInputStream(file);
+        ObjectInputStream leitor = new ObjectInputStream(arquivo)) {
+      return (ArrayList<Doctor>) leitor.readObject();
+    }
   }
 }

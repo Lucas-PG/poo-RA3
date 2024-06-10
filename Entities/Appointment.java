@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
+import java.util.ArrayList;
 
 public class Appointment implements Serializable {
   public LocalDate date;
@@ -24,11 +25,11 @@ public class Appointment implements Serializable {
       doctor.addPatient(this.patient);
     }
 
-    try {
-      patient.saveAppointments("data/consultas/" + patient.name + ".ser");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    // try {
+    //   patient.saveAppointments("data/consultas/" + patient.name + ".ser");
+    // } catch (IOException e) {
+    //   e.printStackTrace();
+    // }
     System.out.println("Appointment criado");
   }
 
@@ -39,5 +40,21 @@ public class Appointment implements Serializable {
     int distanceMonths = period.getYears() * 12 + period.getMonths();
 
     return distanceMonths;
+  }
+
+  public static void save(String file, ArrayList<Appointment> consultas) throws IOException {
+    FileOutputStream arquivo = new FileOutputStream(file);
+    ObjectOutputStream gravador = new ObjectOutputStream(consultas);
+    gravador.writeObject(consultas);
+    gravador.close();
+    arquivo.close();
+  }
+
+  public static ArrayList<Appointment> loadAll(String file)
+      throws IOException, ClassNotFoundException {
+    try (FileInputStream arquivo = new FileInputStream(file);
+        ObjectInputStream leitor = new ObjectInputStream(arquivo)) {
+      return (ArrayList<Appointment>) leitor.readObject();
+    }
   }
 }

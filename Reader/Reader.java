@@ -25,12 +25,13 @@ public class Reader {
 
     if (doctorSer.exists()) {
 
-      try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(doctorSer))) {
-        ArrayList<Doctor> serDoctors = (ArrayList<Doctor>) ois.readObject();
-        doctors.addAll(serDoctors);
-      } catch (IOException | ClassNotFoundException e) {
-        e.printStackTrace();
-      }
+      doctors.addAll(Doctor.loadAll("data/medicos/all.ser"));
+      // try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(doctorSer))) {
+      //   ArrayList<Doctor> serDoctors = (ArrayList<Doctor>) ois.readObject();
+      //   doctors.addAll(serDoctors);
+      // } catch (IOException | ClassNotFoundException e) {
+      //   e.printStackTrace();
+      // }
     } else {
 
       try {
@@ -90,28 +91,29 @@ public class Reader {
       ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
       throws IOException, ClassNotFoundException {
     // TODO: Achar um jeito melhor
-    File appointmentsSer = new File("data/consultas/Andre.ser");
-
-    ArrayList<Appointment> appointmentsList = new ArrayList<>();
+    File appointmentsSer = new File("data/consultas/all.ser");
 
     // TODO: Melhorar a lógica
     if (appointmentsSer.exists()) {
       System.out.println("File existe");
-      for (Patient patient : patients) {
-        String patientFileName = "data/consultas/" + patient.name + ".ser";
-        File patientFile = new File(patientFileName);
 
-        if (patientFile.exists()) {
-          System.out.println("File exists for patient: " + patient.name);
-          try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientFile))) {
-            ArrayList<Appointment> patientAppointments = (ArrayList<Appointment>) ois.readObject();
-            appointments.addAll(patientAppointments);
-          } catch (EOFException eof) {
-          } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-          }
-        }
-      }
+      appointments = Appointment.loadAll("data/consultas/all.ser");
+      // for (Patient patient : patients) {
+      //   String patientFileName = "data/consultas/" + patient.name + ".ser";
+      //   File patientFile = new File(patientFileName);
+      //
+      //   if (patientFile.exists()) {
+      //     System.out.println("File exists for patient: " + patient.name);
+      //     try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientFile))) {
+      //       ArrayList<Appointment> patientAppointments = (ArrayList<Appointment>)
+      // ois.readObject();
+      //       appointments.addAll(patientAppointments);
+      //     } catch (EOFException eof) {
+      //     } catch (IOException | ClassNotFoundException e) {
+      //       e.printStackTrace();
+      //     }
+      //   }
+      // }
     } else {
       try {
         FileReader file = new FileReader(this.appointmentsFile);

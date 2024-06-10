@@ -26,6 +26,12 @@ public class App {
     } catch (IOException e) {
     }
 
+    try {
+      Appointment.save("data/consultas/all.yml");
+    } catch (IOException e) {
+
+    }
+
     Interface userInterface = new Interface(doctors, patients);
     userInterface.start();
   }

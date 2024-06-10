@@ -5,12 +5,13 @@ import java.util.ArrayList;
 
 import Entities.Doctor;
 import Entities.Patient;
-
-import UserInterface.ButtonReader;
+import Exceptions.IllegalOption;
+import Exceptions.IncorrectType;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Interface {
   private ArrayList<Doctor> doctors;
@@ -21,28 +22,25 @@ public class Interface {
     this.patients = patients;
   }
 
-  public void wrongOptionMessage() {
-    JOptionPane.showMessageDialog(null, "Opção Inválida", "Erro", JOptionPane.ERROR_MESSAGE);
-  }
-
-  private Doctor getDoctor(ArrayList<Doctor> doctors) {
+  private Doctor getDoctor(ArrayList<Doctor> doctors) throws IncorrectType, IllegalOption {
     String message = Messages.getDoctorChoiceMessage(doctors);
     int chosenOption = -1;
     ArrayList<Integer> availableCodes = Doctor.getAvailableDoctorCodes(doctors);
 
-    chosenOption = Integer.parseInt(
-        JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
+    try {
+      chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
+    } catch (Exception e) {
+      throw new IncorrectType("Tipo inválido");
+    }
 
     while (!availableCodes.contains(chosenOption)) {
-      wrongOptionMessage();
-      chosenOption = Integer.parseInt(
-          JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
+      throw new IllegalOption("Código Inválido");
     }
 
     return Doctor.getDoctorByCode(chosenOption, doctors);
   }
 
-  private Patient getPatient(ArrayList<Patient> patients) {
+  private Patient getPatient(ArrayList<Patient> patients) throws IllegalOption {
     String message = Messages.getPatientChoiceMessage(patients);
     String chosenCpf = "";
     ArrayList<String> availableCpfs = Patient.getAvailableCpfs(patients);
@@ -50,33 +48,57 @@ public class Interface {
     chosenCpf = JOptionPane.showInputDialog(null, "Digite o cpf do paciente" + message);
 
     while (!availableCpfs.contains(chosenCpf)) {
-      wrongOptionMessage();
-      chosenCpf = JOptionPane.showInputDialog(null, "Digite o cpf do paciente" + message);
+      throw new IllegalOption("CPF Inválido");
     }
 
     return Patient.getPatientByCpf(chosenCpf, patients);
   }
 
-  private int getMenuChosenOption() {
-    int chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
+  private int getMenuChosenOption() throws IllegalOption, IncorrectType {
+    int chosenOption = -1;
 
-    while (!Messages.getPossibleChoicesList().contains(chosenOption)) {
-      wrongOptionMessage();
+    try {
       chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
+    } catch (Exception e) {
+      throw new IncorrectType("Tipo inválido");
+    }
+
+    if (!Messages.getPossibleChoicesList().contains(chosenOption)) {
+      throw new IllegalOption("Opção Inválida!");
     }
 
     return chosenOption;
   }
 
   private void firstOption(ArrayList<Doctor> doctors) {
-    Doctor doctor = this.getDoctor(doctors);
+    Doctor doctor = new Doctor("", -1);
+
+    while (doctor.name == "") {
+      try {
+        doctor = this.getDoctor(doctors);
+      } catch (IllegalOption e) {
+        e.show();
+      } catch (IncorrectType e) {
+        e.show();
+      }
+    }
 
     JOptionPane.showMessageDialog(null, "Aqui está a lista de pacientes de " + doctor.name + ":\n\n"
         + Messages.getPatientsListMessage(doctor.getPatients()));
   }
 
   private void secondOption(ArrayList<Doctor> doctors) {
-    Doctor doctor = this.getDoctor(doctors);
+    Doctor doctor = new Doctor("", -1);
+
+    while (doctor.name == "") {
+      try {
+        doctor = this.getDoctor(doctors);
+      } catch (IllegalOption e) {
+        e.show();
+      } catch (IncorrectType e) {
+        e.show();
+      }
+    }
     String startDate = JOptionPane.showInputDialog(null, "Digite a data de início");
     String endDate = JOptionPane.showInputDialog(null, "Digite a data de fim");
 
@@ -89,15 +111,41 @@ public class Interface {
   }
 
   private void thirdOption(ArrayList<Patient> patients) {
-    Patient patient = this.getPatient(patients);
+    Patient patient = new Patient("", "");
+
+    while (patient.name == "") {
+      try {
+        patient = this.getPatient(patients);
+      } catch (IllegalOption e) {
+        e.show();
+      }
+    }
 
     JOptionPane.showMessageDialog(null, "Aqui está a lista de médicos que " + patient.name + " já consultou:\n\n"
         + Messages.getDoctorsListMessage(patient.getDoctorsByPatient()));
   }
 
   private void fourthOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
-    Patient patient = this.getPatient(patients);
-    Doctor doctor = this.getDoctor(doctors);
+    Patient patient = new Patient("", "");
+
+    while (patient.name == "") {
+      try {
+        patient = this.getPatient(patients);
+      } catch (IllegalOption e) {
+        e.show();
+      }
+    }
+    Doctor doctor = new Doctor("", -1);
+
+    while (doctor.name == "") {
+      try {
+        doctor = this.getDoctor(doctors);
+      } catch (IllegalOption e) {
+        e.show();
+      } catch (IncorrectType e) {
+        e.show();
+      }
+    }
 
     JOptionPane.showMessageDialog(null,
         "Aqui está a lista de consultas de " + patient.name + " com o médico(a) " + doctor.name + ":\n\n"
@@ -105,7 +153,15 @@ public class Interface {
   }
 
   private void fitfhOption(ArrayList<Patient> patients) {
-    Patient patient = this.getPatient(patients);
+    Patient patient = new Patient("", "");
+
+    while (patient.name == "") {
+      try {
+        patient = this.getPatient(patients);
+      } catch (IllegalOption e) {
+        e.show();
+      }
+    }
 
     JOptionPane.showMessageDialog(null,
         "Aqui está a lista de consultas marcadas de " + patient.name + ":\n\n"
@@ -113,7 +169,17 @@ public class Interface {
   }
 
   private void sixthOption(ArrayList<Doctor> doctors) {
-    Doctor doctor = this.getDoctor(doctors);
+    Doctor doctor = new Doctor("", -1);
+
+    while (doctor.name == "") {
+      try {
+        doctor = this.getDoctor(doctors);
+      } catch (IllegalOption e) {
+        e.show();
+      } catch (IncorrectType e) {
+        e.show();
+      }
+    }
     int months = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a quantidade de meses para filtrar"));
 
     JOptionPane.showMessageDialog(null,
@@ -125,7 +191,15 @@ public class Interface {
     int chosenOption = -1;
 
     do {
-      chosenOption = getMenuChosenOption();
+      while (!Messages.getPossibleChoicesList().contains(chosenOption)) {
+        try {
+          chosenOption = getMenuChosenOption();
+        } catch (IllegalOption e) {
+          e.show();
+        } catch (IncorrectType e) {
+          e.show();
+        }
+      }
 
       switch (chosenOption) {
         case 1:
@@ -147,9 +221,12 @@ public class Interface {
           this.sixthOption(doctors);
           break;
         case 7:
-          JOptionPane.showMessageDialog(null, "Obrigador por utilizar nosso sistema!");
+          JOptionPane.showMessageDialog(null, "Obrigado por utilizar nosso sistema!");
           break;
+      }
 
+      if (chosenOption != 7) {
+        chosenOption = -1;
       }
     } while (chosenOption != 7);
   }

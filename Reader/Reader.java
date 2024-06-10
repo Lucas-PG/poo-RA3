@@ -57,7 +57,7 @@ public class Reader {
   private void readPatients(ArrayList<Patient> patients)
       throws IOException, ClassNotFoundException {
     boolean patientsSerRead = false;
-    final String PATIENTS_FILE = "data/pacientes/all.yml";
+    final String PATIENTS_FILE = "data/pacientes/all.ser";
 
     try {
       patients = Patient.loadAll(PATIENTS_FILE);
@@ -94,7 +94,7 @@ public class Reader {
       throws IOException, ClassNotFoundException {
 
     boolean appointmentsSerRead = false;
-    final String APPOINTMENTS_FILE = "data/consultas/all.yml";
+    final String APPOINTMENTS_FILE = "data/consultas/all.ser";
 
     try {
       appointments = Appointment.loadAll(APPOINTMENTS_FILE);

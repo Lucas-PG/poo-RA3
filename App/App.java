@@ -16,18 +16,19 @@ public class App {
     ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
     reader.read(doctors, patients, appointments);
+
     try {
-      Patient.save("data/pacientes/all.yml", patients);
+      Patient.save("data/pacientes/all.ser", patients);
     } catch (IOException e) {
     }
 
     try {
-      Doctor.save("data/medicos/all.yml", doctors);
+      Doctor.save("data/medicos/all.ser", doctors);
     } catch (IOException e) {
     }
 
     try {
-      Appointment.save("data/consultas/all.yml", appointments);
+      Appointment.save("data/consultas/all.ser", appointments);
     } catch (IOException e) {
 
     }

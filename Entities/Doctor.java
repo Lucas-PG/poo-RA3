@@ -10,9 +10,16 @@ public class Doctor implements Serializable {
   private ArrayList<Patient> patients = new ArrayList<Patient>();
   private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
+  private static ArrayList<Doctor> allDoctors = new ArrayList<>();
+
   public Doctor(String name, int code) {
     this.name = name;
     this.code = code;
+
+    try {
+      save("data/medicos/all.ser");
+    } catch (IOException e) {
+    }
   }
 
   public static ArrayList<Integer> getAvailableDoctorCodes(ArrayList<Doctor> doctors) {
@@ -99,5 +106,12 @@ public class Doctor implements Serializable {
     }
     return appointmentsByPeriod;
   }
-}
 
+  public void save(String file) throws IOException {
+    FileOutputStream arquivo = new FileOutputStream(file);
+    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+    gravador.writeObject(allDoctors);
+    gravador.close();
+    arquivo.close();
+  }
+}

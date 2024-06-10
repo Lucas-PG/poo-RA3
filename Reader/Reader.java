@@ -19,61 +19,113 @@ public class Reader {
     this.appointmentsFile = appointmentsFile;
   }
 
-  private void readDoctors(ArrayList<Doctor> doctors) {
-    try {
-      FileReader file = new FileReader(this.doctorsFile);
-      BufferedReader buffer = new BufferedReader(file);
-      buffer.readLine();
+  private void readDoctors(ArrayList<Doctor> doctors) throws IOException, ClassNotFoundException {
 
-      while (buffer.ready()) {
-        String linha = buffer.readLine();
-        String[] tokens = linha.split(",");
+    File doctorSer = new File("data/medicos/all.ser");
 
-        Doctor doctor = new Doctor(tokens[0], Integer.parseInt(tokens[1]));
-        doctors.add(doctor);
+    if (doctorSer.exists()) {
+      ArrayList<Doctor> serDoctors = new ArrayList<>();
+
+      try (FileInputStream fileIn = new FileInputStream(doctorSer);
+          ObjectInputStream in = new ObjectInputStream(fileIn)) {
+
+        while (true) {
+          try {
+            Doctor doctor = (Doctor) in.readObject();
+            serDoctors.add(doctor);
+          } catch (EOFException e) {
+            break; // End of file reached
+          }
+        }
+      } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
       }
+    } else {
 
-      buffer.close();
+      try {
+        FileReader file = new FileReader(this.doctorsFile);
+        BufferedReader buffer = new BufferedReader(file);
+        buffer.readLine();
 
-    } catch (Exception e) {
-      System.out.println("Ocorreu um erro ao ler o arquivo dos médicos!");
-      System.out.println(e.getMessage());
+        while (buffer.ready()) {
+          String linha = buffer.readLine();
+          String[] tokens = linha.split(",");
+
+          Doctor doctor = new Doctor(tokens[0], Integer.parseInt(tokens[1]));
+          doctors.add(doctor);
+        }
+
+        buffer.close();
+
+      } catch (Exception e) {
+        System.out.println("Ocorreu um erro ao ler o arquivo dos médicos!");
+        System.out.println(e.getMessage());
+      }
     }
   }
 
-  private void readPatients(ArrayList<Patient> patients) {
-    try {
-      FileReader file = new FileReader(this.patientsFile);
-      BufferedReader buffer = new BufferedReader(file);
-      buffer.readLine();
+  private void readPatients(ArrayList<Patient> patients)
+      throws IOException, ClassNotFoundException {
+    File patientSer = new File("data/pacientes/all.ser");
 
-      while (buffer.ready()) {
-        String linha = buffer.readLine();
-        String[] tokens = linha.split(",");
+    if (patientSer.exists()) {
+      ArrayList<Patient> serPatients = new ArrayList<>();
 
-        Patient patient = new Patient(tokens[0], tokens[1]);
-        patients.add(patient);
+      try (FileInputStream fileIn = new FileInputStream(patientSer);
+          ObjectInputStream in = new ObjectInputStream(fileIn)) {
+
+        while (true) {
+          try {
+            Patient patient = (Patient) in.readObject();
+            serPatients.add(patient);
+          } catch (EOFException e) {
+            break; // End of file reached
+          }
+        }
+      } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
       }
 
-      buffer.close();
+      // Now you can use the list of deserialized patients
+      for (Patient patient : serPatients) {
+        System.out.println(patient);
+      }
+    } else {
+      try {
+        FileReader file = new FileReader(this.patientsFile);
+        BufferedReader buffer = new BufferedReader(file);
+        buffer.readLine();
 
-    } catch (Exception e) {
-      System.out.println("Ocorreu um erro ao ler o arquivo dos pacientes!");
-      System.out.println(e.getMessage());
+        while (buffer.ready()) {
+          String linha = buffer.readLine();
+          String[] tokens = linha.split(",");
+
+          Patient patient = new Patient(tokens[0], tokens[1]);
+          patients.add(patient);
+        }
+
+        buffer.close();
+
+      } catch (Exception e) {
+        System.out.println("Ocorreu um erro ao ler o arquivo dos pacientes!");
+        System.out.println(e.getMessage());
+      }
     }
   }
 
   private void readAppointments(
       ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
       throws IOException, ClassNotFoundException {
-    File appointmentsSer = new File("data/Andre.ser");
+    // TODO: Achar um jeito melhor
+    File appointmentsSer = new File("data/consultas/Andre.ser");
 
     ArrayList<Appointment> appointmentsList = new ArrayList<>();
 
+    // TODO: Melhorar a lógica
     if (appointmentsSer.exists()) {
       System.out.println("File existe");
       for (Patient patient : patients) {
-        String patientFileName = "data/" + patient.name + ".ser";
+        String patientFileName = "data/consultas/" + patient.name + ".ser";
         File patientFile = new File(patientFileName);
 
         if (patientFile.exists()) {
@@ -81,10 +133,6 @@ public class Reader {
           try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientFile))) {
             ArrayList<Appointment> patientAppointments = (ArrayList<Appointment>) ois.readObject();
             appointments.addAll(patientAppointments);
-
-            for (Appointment a : patientAppointments) {
-              patient.addAppointment(a);
-            }
           } catch (EOFException eof) {
           } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -125,8 +173,18 @@ public class Reader {
 
   public void read(
       ArrayList<Doctor> doctors, ArrayList<Patient> patients, ArrayList<Appointment> appointments) {
-    this.readPatients(patients);
-    this.readDoctors(doctors);
+    try {
+
+      this.readDoctors(doctors);
+    } catch (IOException | ClassNotFoundException e) {
+
+    }
+    try {
+
+      this.readPatients(patients);
+    } catch (IOException | ClassNotFoundException e) {
+
+    }
     try {
       readAppointments(appointments, patients, doctors);
     } catch (IOException | ClassNotFoundException e) {

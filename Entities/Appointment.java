@@ -25,10 +25,11 @@ public class Appointment implements Serializable {
     }
 
     try {
-      patient.save("data/" + patient.name + ".ser");
+      patient.saveAppointments("data/consultas/" + patient.name + ".ser");
     } catch (IOException e) {
       e.printStackTrace();
     }
+    System.out.println("Appointment criado");
   }
 
   public int getMonthDiffFromCurrentDate() {

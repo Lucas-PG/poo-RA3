@@ -9,11 +9,17 @@ public class Patient implements Serializable {
   public String name;
   public String cpf;
   public ArrayList<Appointment> appointments;
+  private static ArrayList<Patient> allPatients = new ArrayList<>();
 
   public Patient(String name, String cpf) {
     this.name = name;
     this.cpf = cpf;
     this.appointments = new ArrayList<Appointment>();
+    allPatients.add(this);
+    try {
+      save("data/pacientes/all.ser");
+    } catch (IOException e) {
+    }
   }
 
   public static ArrayList<String> getAvailableCpfs(ArrayList<Patient> patients) {
@@ -92,6 +98,14 @@ public class Patient implements Serializable {
   }
 
   public void save(String file) throws IOException {
+    FileOutputStream arquivo = new FileOutputStream(file);
+    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+    gravador.writeObject(allPatients);
+    gravador.close();
+    arquivo.close();
+  }
+
+  public void saveAppointments(String file) throws IOException {
     FileOutputStream arquivo = new FileOutputStream(file);
     ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
     gravador.writeObject(appointments);

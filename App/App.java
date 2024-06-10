@@ -8,6 +8,10 @@ import UserInterface.Interface;
 import java.io.*;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
+import java.awt.*;
+
 public class App {
   public static void main(String args[]) {
     Reader reader = new Reader("medicos.csv", "pacientes.csv", "consultas.csv");
@@ -33,7 +37,6 @@ public class App {
 
     }
 
-    Interface userInterface = new Interface(doctors, patients);
-    userInterface.start();
+    SwingUtilities.invokeLater(() -> new Interface(doctors, patients));
   }
 }

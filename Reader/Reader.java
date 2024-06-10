@@ -149,7 +149,7 @@ public class Reader {
 
     }
     try {
-      readAppointments(appointments, patients, doctors);
+      this.readAppointments(appointments, patients, doctors);
     } catch (IOException | ClassNotFoundException e) {
     }
   }

@@ -21,19 +21,17 @@ public class Reader {
 
   private void readDoctors(ArrayList<Doctor> doctors) throws IOException, ClassNotFoundException {
 
-    File doctorSer = new File("data/medicos/all.ser");
+    boolean doctorsSerRead = false;
+    final String DOCTORS_FILE = "data/medicos/all.ser";
 
-    if (doctorSer.exists()) {
+    try {
+      doctors = Doctor.loadAll(DOCTORS_FILE);
+      doctorsSerRead = true;
+    } catch (IOException | ClassNotFoundException e) {
+      System.out.println("Erro ao carregar dados .ser dos médicos: " + e.getMessage());
+    }
 
-      doctors.addAll(Doctor.loadAll("data/medicos/all.ser"));
-      // try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(doctorSer))) {
-      //   ArrayList<Doctor> serDoctors = (ArrayList<Doctor>) ois.readObject();
-      //   doctors.addAll(serDoctors);
-      // } catch (IOException | ClassNotFoundException e) {
-      //   e.printStackTrace();
-      // }
-    } else {
-
+    if (!doctorsSerRead) {
       try {
         FileReader file = new FileReader(this.doctorsFile);
         BufferedReader buffer = new BufferedReader(file);
@@ -58,13 +56,17 @@ public class Reader {
 
   private void readPatients(ArrayList<Patient> patients)
       throws IOException, ClassNotFoundException {
-    File patientsSer = new File("data/pacientes/all.ser");
-    String patientsSerStr = "data/pacientes/all.ser";
+    boolean patientsSerRead = false;
+    final String PATIENTS_FILE = "data/pacientes/all.yml";
 
-    if (patientsSer.exists()) {
-      patients.addAll(Patient.loadAll(patientsSerStr));
-      System.out.println(patients);
-    } else {
+    try {
+      patients = Patient.loadAll(PATIENTS_FILE);
+      patientsSerRead = true;
+    } catch (IOException | ClassNotFoundException e) {
+      System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());
+    }
+
+    if (!patientsSerRead) {
       try {
         FileReader file = new FileReader(this.patientsFile);
         BufferedReader buffer = new BufferedReader(file);
@@ -90,31 +92,18 @@ public class Reader {
   private void readAppointments(
       ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
       throws IOException, ClassNotFoundException {
-    // TODO: Achar um jeito melhor
-    File appointmentsSer = new File("data/consultas/all.ser");
 
-    // TODO: Melhorar a lógica
-    if (appointmentsSer.exists()) {
-      System.out.println("File existe");
+    boolean appointmentsSerRead = false;
+    final String APPOINTMENTS_FILE = "data/consultas/all.yml";
 
-      appointments = Appointment.loadAll("data/consultas/all.ser");
-      // for (Patient patient : patients) {
-      //   String patientFileName = "data/consultas/" + patient.name + ".ser";
-      //   File patientFile = new File(patientFileName);
-      //
-      //   if (patientFile.exists()) {
-      //     System.out.println("File exists for patient: " + patient.name);
-      //     try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientFile))) {
-      //       ArrayList<Appointment> patientAppointments = (ArrayList<Appointment>)
-      // ois.readObject();
-      //       appointments.addAll(patientAppointments);
-      //     } catch (EOFException eof) {
-      //     } catch (IOException | ClassNotFoundException e) {
-      //       e.printStackTrace();
-      //     }
-      //   }
-      // }
-    } else {
+    try {
+      appointments = Appointment.loadAll(APPOINTMENTS_FILE);
+      appointmentsSerRead = true;
+    } catch (IOException | ClassNotFoundException e) {
+      System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());
+    }
+
+    if (!appointmentsSerRead) {
       try {
         FileReader file = new FileReader(this.appointmentsFile);
         BufferedReader buffer = new BufferedReader(file);
@@ -130,9 +119,8 @@ public class Reader {
           Patient patient = Patient.getPatientByCpf(patientCpf, patients);
           Doctor doctor = Doctor.getDoctorByCode(doctorCode, doctors);
 
-          Appointment appointment =
-              new Appointment(
-                  LocalDate.parse(tokens[0]), LocalTime.parse(tokens[1]), doctor, patient);
+          Appointment appointment = new Appointment(
+              LocalDate.parse(tokens[0]), LocalTime.parse(tokens[1]), doctor, patient);
           appointments.add(appointment);
         }
 

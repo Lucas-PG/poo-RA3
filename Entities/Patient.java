@@ -26,12 +26,10 @@ public class Patient implements Serializable {
     }
 
     return cpfList;
-  }
-  ;
+  };
 
   public static Patient getPatientByCpf(String cpf, ArrayList<Patient> patients) {
-    Patient patientToReturn =
-        new Patient("", ""); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
+    Patient patientToReturn = new Patient("", ""); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
 
     for (Patient patient : patients) {
       if (patient.cpf.equals(cpf)) {
@@ -94,11 +92,9 @@ public class Patient implements Serializable {
   }
 
   public static void save(String file, ArrayList<Patient> pacientes) throws IOException {
-    FileOutputStream arquivo = new FileOutputStream(file);
-    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-    gravador.writeObject(pacientes);
-    gravador.close();
-    arquivo.close();
+    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+      oos.writeObject(pacientes);
+    }
   }
 
   public void saveAppointments(String file) throws IOException {
@@ -110,9 +106,8 @@ public class Patient implements Serializable {
   }
 
   public static ArrayList<Patient> loadAll(String file) throws IOException, ClassNotFoundException {
-    try (FileInputStream arquivo = new FileInputStream(file);
-        ObjectInputStream leitor = new ObjectInputStream(arquivo)) {
-      return (ArrayList<Patient>) leitor.readObject();
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+      return (ArrayList<Patient>) ois.readObject();
     }
   }
 }

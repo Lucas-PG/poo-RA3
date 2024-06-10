@@ -1,7 +1,6 @@
 package Entities;
 
 import java.io.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -26,9 +25,9 @@ public class Appointment implements Serializable {
     }
 
     // try {
-    //   patient.saveAppointments("data/consultas/" + patient.name + ".ser");
+    // patient.saveAppointments("data/consultas/" + patient.name + ".ser");
     // } catch (IOException e) {
-    //   e.printStackTrace();
+    // e.printStackTrace();
     // }
     System.out.println("Appointment criado");
   }
@@ -43,18 +42,15 @@ public class Appointment implements Serializable {
   }
 
   public static void save(String file, ArrayList<Appointment> consultas) throws IOException {
-    FileOutputStream arquivo = new FileOutputStream(file);
-    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-    gravador.writeObject(consultas);
-    gravador.close();
-    arquivo.close();
+    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+      oos.writeObject(consultas);
+    }
   }
 
   public static ArrayList<Appointment> loadAll(String file)
       throws IOException, ClassNotFoundException {
-    try (FileInputStream arquivo = new FileInputStream(file);
-        ObjectInputStream leitor = new ObjectInputStream(arquivo)) {
-      return (ArrayList<Appointment>) leitor.readObject();
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+      return (ArrayList<Appointment>) ois.readObject();
     }
   }
 }

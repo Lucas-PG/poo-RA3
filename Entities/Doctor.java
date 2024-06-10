@@ -17,10 +17,7 @@ public class Doctor implements Serializable {
     this.code = code;
 
     allDoctors.add(this);
-    // try {
-    // save("data/medicos/all.ser");
-    // } catch (IOException e) {
-    // }
+
   }
 
   public static ArrayList<Integer> getAvailableDoctorCodes(ArrayList<Doctor> doctors) {

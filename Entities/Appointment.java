@@ -23,12 +23,6 @@ public class Appointment implements Serializable {
     if (!doctor.hasPatient(patient)) {
       doctor.addPatient(this.patient);
     }
-
-    // try {
-    // patient.saveAppointments("data/consultas/" + patient.name + ".ser");
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
     System.out.println("Appointment criado");
   }
 

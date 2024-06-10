@@ -184,6 +184,31 @@ public class Interface {
             + Messages.getPatientsListMessage(doctor.getMissingPatients(months)));
   }
 
+  private void seventhOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
+    Patient patient = new Patient("", "");
+
+    while (patient.name == "") {
+      try {
+        patient = this.getPatient(patients);
+      } catch (IllegalOption e) {
+        e.show();
+      }
+    }
+    Doctor doctor = new Doctor("", -1);
+
+    while (doctor.name == "") {
+      try {
+        doctor = this.getDoctor(doctors);
+      } catch (IllegalOption e) {
+        e.show();
+      } catch (IncorrectType e) {
+        e.show();
+      }
+    }
+    String date = JOptionPane.showInputDialog(null, "Digite a data da consulta");
+
+  }
+
   public void start() {
     int chosenOption = -1;
 
@@ -218,7 +243,7 @@ public class Interface {
           this.sixthOption(doctors);
           break;
         case 7:
-          // TODO
+          this.seventhOption(patients, doctors);
           break;
         case 8:
           JOptionPane.showMessageDialog(null, "Obrigado por utilizar nosso sistema!");

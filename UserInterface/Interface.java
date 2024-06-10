@@ -6,11 +6,23 @@ import java.util.ArrayList;
 import Entities.Doctor;
 import Entities.Patient;
 
-public class Interface {
-  UserScanner userScanner;
+import UserInterface.ButtonReader;
 
-  public Interface() {
-    this.userScanner = new UserScanner();
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class Interface {
+  private ArrayList<Doctor> doctors;
+  private ArrayList<Patient> patients;
+
+  public Interface(ArrayList<Doctor> doctors, ArrayList<Patient> patients) {
+    this.doctors = doctors;
+    this.patients = patients;
+  }
+
+  public void wrongOptionMessage() {
+    JOptionPane.showMessageDialog(null, "Opção Inválida", "Erro", JOptionPane.ERROR_MESSAGE);
   }
 
   private Doctor getDoctor(ArrayList<Doctor> doctors) {
@@ -18,12 +30,13 @@ public class Interface {
     int chosenOption = -1;
     ArrayList<Integer> availableCodes = Doctor.getAvailableDoctorCodes(doctors);
 
-    System.out.print(message);
-    chosenOption = this.userScanner.getInt("Digite o código do médico");
+    chosenOption = Integer.parseInt(
+        JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
 
     while (!availableCodes.contains(chosenOption)) {
-      System.out.println("Digite um código válido");
-      chosenOption = this.userScanner.getInt("Digite o código do médico");
+      wrongOptionMessage();
+      chosenOption = Integer.parseInt(
+          JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
     }
 
     return Doctor.getDoctorByCode(chosenOption, doctors);
@@ -34,28 +47,22 @@ public class Interface {
     String chosenCpf = "";
     ArrayList<String> availableCpfs = Patient.getAvailableCpfs(patients);
 
-    System.out.print(message);
-    chosenCpf = this.userScanner.getCpf("Digite o cpf do paciente");
+    chosenCpf = JOptionPane.showInputDialog(null, "Digite o cpf do paciente" + message);
 
     while (!availableCpfs.contains(chosenCpf)) {
-      System.out.println("Digite um cpf válido");
-      chosenCpf = this.userScanner.getCpf("Digite o cpf do paciente");
+      wrongOptionMessage();
+      chosenCpf = JOptionPane.showInputDialog(null, "Digite o cpf do paciente" + message);
     }
 
     return Patient.getPatientByCpf(chosenCpf, patients);
   }
 
   private int getMenuChosenOption() {
-    String message = Messages.getChoicesMessage();
-    ArrayList<Integer> possibleChoices = Messages.getPossibleChoicesList();
-    int chosenOption = -1;
+    int chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
 
-    System.out.println(message);
-    chosenOption = this.userScanner.getInt("Digite o número da opção escolhida");
-
-    while (!possibleChoices.contains(chosenOption)) {
-      System.out.println("Digite uma opção válida");
-      chosenOption = this.userScanner.getInt("Digite o número da opção escolhida");
+    while (!Messages.getPossibleChoicesList().contains(chosenOption)) {
+      wrongOptionMessage();
+      chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
     }
 
     return chosenOption;
@@ -64,52 +71,57 @@ public class Interface {
   private void firstOption(ArrayList<Doctor> doctors) {
     Doctor doctor = this.getDoctor(doctors);
 
-    System.out.println("Aqui está a lista de pacientes de " + doctor.name + ":");
-    System.out.println(Messages.getPatientsListMessage(doctor.getPatients()));
+    JOptionPane.showMessageDialog(null, "Aqui está a lista de pacientes de " + doctor.name + ":\n\n"
+        + Messages.getPatientsListMessage(doctor.getPatients()));
   }
 
   private void secondOption(ArrayList<Doctor> doctors) {
     Doctor doctor = this.getDoctor(doctors);
-    String startDate = this.userScanner.getDate("Digite a data de início");
-    String endDate = this.userScanner.getDate("Digite a data de fim");
-    
-    System.out.println("Aqui está a lista de consultas do doutor " + doctor.name + "\n");
-    System.out.println("No período entre " + startDate + " e " + endDate + ":\n");
-    System.out.println(Messages.getAppointmentsListMessage(doctor.getAppointmentsByPeriod(LocalDate.parse(startDate), LocalDate.parse(endDate))));
+    String startDate = JOptionPane.showInputDialog(null, "Digite a data de início");
+    String endDate = JOptionPane.showInputDialog(null, "Digite a data de fim");
+
+    JOptionPane.showMessageDialog(null,
+        "Aqui está a lista de consultas do doutor " + doctor.name + "\n" + "No período entre " + startDate + " e "
+            + endDate + ":\n"
+            + Messages.getAppointmentsListMessage(
+                doctor.getAppointmentsByPeriod(LocalDate.parse(startDate),
+                    LocalDate.parse(endDate))));
   }
 
   private void thirdOption(ArrayList<Patient> patients) {
     Patient patient = this.getPatient(patients);
 
-    System.out.println("Aqui está a lista de médicos que " + patient.name + " já consultou:");
-    System.out.println(Messages.getDoctorsListMessage(patient.getDoctorsByPatient()));
+    JOptionPane.showMessageDialog(null, "Aqui está a lista de médicos que " + patient.name + " já consultou:\n\n"
+        + Messages.getDoctorsListMessage(patient.getDoctorsByPatient()));
   }
 
   private void fourthOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
     Patient patient = this.getPatient(patients);
     Doctor doctor = this.getDoctor(doctors);
 
-    System.out.println("Aqui está a lista de consultas de " + patient.name + " com o médico(a) " + doctor.name + ":");
-    System.out.println(Messages.getAppointmentsListMessage(patient.getAppointmentsByDoctor(doctor)));
+    JOptionPane.showMessageDialog(null,
+        "Aqui está a lista de consultas de " + patient.name + " com o médico(a) " + doctor.name + ":\n\n"
+            + Messages.getAppointmentsListMessage(patient.getAppointmentsByDoctor(doctor)));
   }
 
   private void fitfhOption(ArrayList<Patient> patients) {
     Patient patient = this.getPatient(patients);
 
-    System.out.println("Aqui está a lista de consultas marcadas de " + patient.name + ":");
-    System.out.println(Messages.getAppointmentsListMessage(patient.getFutureAppointments()));
+    JOptionPane.showMessageDialog(null,
+        "Aqui está a lista de consultas marcadas de " + patient.name + ":\n\n"
+            + Messages.getAppointmentsListMessage(patient.getFutureAppointments()));
   }
 
   private void sixthOption(ArrayList<Doctor> doctors) {
     Doctor doctor = this.getDoctor(doctors);
-    int months = this.userScanner.getInt("Digite a quantidade de meses para filtrar");
+    int months = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a quantidade de meses para filtrar"));
 
-    System.out.println("Aqui estão os pacientes que não se consultam com " + doctor.name + " há " + months + " meses:");
-    System.out.println(Messages.getPatientsListMessage(doctor.getMissingPatients(months)));
+    JOptionPane.showMessageDialog(null,
+        "Aqui estão os pacientes que não se consultam com " + doctor.name + " há " + months + " meses:\n\n"
+            + Messages.getPatientsListMessage(doctor.getMissingPatients(months)));
   }
 
-  // Depois melhoramos os nomes dessas variáveis, deixa essas por enquanto
-  public void startUserInteraction(ArrayList<Doctor> doctors, ArrayList<Patient> patients) {
+  public void start() {
     int chosenOption = -1;
 
     do {
@@ -135,8 +147,7 @@ public class Interface {
           this.sixthOption(doctors);
           break;
         case 7:
-          System.out.println("Obrigado por utilizar nosso sistema!");
-          System.out.println("Saindo...");
+          JOptionPane.showMessageDialog(null, "Obrigador por utilizar nosso sistema!");
           break;
 
       }

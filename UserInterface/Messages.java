@@ -37,7 +37,7 @@ public class Messages {
   public static String getDoctorsListMessage(ArrayList<Doctor> doctors) {
     String message = "";
 
-    if(doctors.size() == 0) {
+    if (doctors.size() == 0) {
       return "Nenhum doutor encontrado \n";
     }
 
@@ -51,7 +51,7 @@ public class Messages {
   public static String getPatientsListMessage(ArrayList<Patient> patients) {
     String message = "";
 
-    if(patients.size() == 0){
+    if (patients.size() == 0) {
       return "Nenhum paciente encontrado \n";
     }
 
@@ -65,7 +65,7 @@ public class Messages {
   public static String getAppointmentsListMessage(ArrayList<Appointment> appointments) {
     String message = "";
 
-    if(appointments.size() == 0){
+    if (appointments.size() == 0) {
       return "Nenhuma consulta encontrada \n";
     }
 

@@ -15,7 +15,8 @@ public class Messages {
     message += "4 - Obter as consultas que um determinado paciente realizou com determinado médico\n";
     message += "5 - Obter as consultas agendadas de um determinado paciente\n";
     message += "6 - Obter os pacientes que um determinado médico não consulta em um dado período.\n";
-    message += "7 - Sair\n";
+    message += "7 - Marcar consulta.\n";
+    message += "8 - Sair\n";
 
     return message;
   }
@@ -30,6 +31,7 @@ public class Messages {
         add(5);
         add(6);
         add(7);
+        add(8);
       }
     };
   }

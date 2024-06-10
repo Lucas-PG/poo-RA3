@@ -9,9 +9,6 @@ import Exceptions.IllegalOption;
 import Exceptions.IncorrectType;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class Interface {
   private ArrayList<Doctor> doctors;
@@ -221,13 +218,16 @@ public class Interface {
           this.sixthOption(doctors);
           break;
         case 7:
+          // TODO
+          break;
+        case 8:
           JOptionPane.showMessageDialog(null, "Obrigado por utilizar nosso sistema!");
           break;
       }
 
-      if (chosenOption != 7) {
+      if (chosenOption != 8) {
         chosenOption = -1;
       }
-    } while (chosenOption != 7);
+    } while (chosenOption != 8);
   }
 }

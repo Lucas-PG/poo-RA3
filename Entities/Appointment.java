@@ -1,5 +1,6 @@
 package Entities;
 
+import java.io.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +23,12 @@ public class Appointment implements Serializable {
     if (!doctor.hasPatient(patient)) {
       doctor.addPatient(this.patient);
     }
+
+    try {
+      save("consultas.ser");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public int getMonthDiffFromCurrentDate() {
@@ -31,5 +38,13 @@ public class Appointment implements Serializable {
     int distanceMonths = period.getYears() * 12 + period.getMonths();
 
     return distanceMonths;
+  }
+
+  public void save(String file) throws IOException {
+    FileOutputStream arquivo = new FileOutputStream(file);
+    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+    gravador.writeObject(this);
+    gravador.close();
+    arquivo.close();
   }
 }

@@ -1,10 +1,11 @@
 package Entities;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Patient {
+public class Patient implements Serializable {
   public String name;
   public String cpf;
   public ArrayList<Appointment> appointments;
@@ -23,10 +24,12 @@ public class Patient {
     }
 
     return cpfList;
-  };
+  }
+  ;
 
   public static Patient getPatientByCpf(String cpf, ArrayList<Patient> patients) {
-    Patient patientToReturn = new Patient("", ""); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
+    Patient patientToReturn =
+        new Patient("", ""); // PREENCHER COM DADOS PLACEHOLDER (preciso do construtor)
 
     for (Patient patient : patients) {
       if (patient.cpf.equals(cpf)) {
@@ -63,8 +66,9 @@ public class Patient {
     ArrayList<Appointment> appointmentsByDoctor = new ArrayList<Appointment>();
 
     for (Appointment a : appointments) {
-      if (a.doctor == doctor && (a.date.isBefore(LocalDate.now())
-          || (a.date.isEqual(LocalDate.now()) && a.time.isBefore(LocalTime.now())))) {
+      if (a.doctor == doctor
+          && (a.date.isBefore(LocalDate.now())
+              || (a.date.isEqual(LocalDate.now()) && a.time.isBefore(LocalTime.now())))) {
         appointmentsByDoctor.add(a);
       }
     }
@@ -74,17 +78,16 @@ public class Patient {
   public ArrayList<Appointment> getFutureAppointments() {
     ArrayList<Appointment> futureAppointments = new ArrayList<Appointment>();
     for (Appointment a : appointments) {
-      if (a.date.isAfter(LocalDate.now()) || (a.date.isEqual(LocalDate.now()) && a.time.isAfter(LocalTime.now()))) {
+      if (a.date.isAfter(LocalDate.now())
+          || (a.date.isEqual(LocalDate.now()) && a.time.isAfter(LocalTime.now()))) {
         futureAppointments.add(a);
       }
     }
 
     return futureAppointments;
-
   }
 
   public void addAppointment(Appointment appointment) {
     appointments.add(appointment);
   }
-
 }

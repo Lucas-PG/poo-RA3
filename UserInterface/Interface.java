@@ -1,13 +1,14 @@
 package UserInterface;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-
+import Entities.Appointment;
 import Entities.Doctor;
 import Entities.Patient;
 import Exceptions.IllegalOption;
 import Exceptions.IncorrectType;
-
+import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class Interface {
@@ -25,7 +26,9 @@ public class Interface {
     ArrayList<Integer> availableCodes = Doctor.getAvailableDoctorCodes(doctors);
 
     try {
-      chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
+      chosenOption =
+          Integer.parseInt(
+              JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
     } catch (Exception e) {
       throw new IncorrectType("Tipo inválido");
     }
@@ -55,7 +58,8 @@ public class Interface {
     int chosenOption = -1;
 
     try {
-      chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
+      chosenOption =
+          Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
     } catch (Exception e) {
       throw new IncorrectType("Tipo inválido");
     }
@@ -80,8 +84,12 @@ public class Interface {
       }
     }
 
-    JOptionPane.showMessageDialog(null, "Aqui está a lista de pacientes de " + doctor.name + ":\n\n"
-        + Messages.getPatientsListMessage(doctor.getPatients()));
+    JOptionPane.showMessageDialog(
+        null,
+        "Aqui está a lista de pacientes de "
+            + doctor.name
+            + ":\n\n"
+            + Messages.getPatientsListMessage(doctor.getPatients()));
   }
 
   private void secondOption(ArrayList<Doctor> doctors) {
@@ -99,12 +107,19 @@ public class Interface {
     String startDate = JOptionPane.showInputDialog(null, "Digite a data de início");
     String endDate = JOptionPane.showInputDialog(null, "Digite a data de fim");
 
-    JOptionPane.showMessageDialog(null,
-        "Aqui está a lista de consultas do doutor " + doctor.name + "\n" + "No período entre " + startDate + " e "
-            + endDate + ":\n"
+    JOptionPane.showMessageDialog(
+        null,
+        "Aqui está a lista de consultas do doutor "
+            + doctor.name
+            + "\n"
+            + "No período entre "
+            + startDate
+            + " e "
+            + endDate
+            + ":\n"
             + Messages.getAppointmentsListMessage(
-                doctor.getAppointmentsByPeriod(LocalDate.parse(startDate),
-                    LocalDate.parse(endDate))));
+                doctor.getAppointmentsByPeriod(
+                    LocalDate.parse(startDate), LocalDate.parse(endDate))));
   }
 
   private void thirdOption(ArrayList<Patient> patients) {
@@ -118,8 +133,12 @@ public class Interface {
       }
     }
 
-    JOptionPane.showMessageDialog(null, "Aqui está a lista de médicos que " + patient.name + " já consultou:\n\n"
-        + Messages.getDoctorsListMessage(patient.getDoctorsByPatient()));
+    JOptionPane.showMessageDialog(
+        null,
+        "Aqui está a lista de médicos que "
+            + patient.name
+            + " já consultou:\n\n"
+            + Messages.getDoctorsListMessage(patient.getDoctorsByPatient()));
   }
 
   private void fourthOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
@@ -144,8 +163,13 @@ public class Interface {
       }
     }
 
-    JOptionPane.showMessageDialog(null,
-        "Aqui está a lista de consultas de " + patient.name + " com o médico(a) " + doctor.name + ":\n\n"
+    JOptionPane.showMessageDialog(
+        null,
+        "Aqui está a lista de consultas de "
+            + patient.name
+            + " com o médico(a) "
+            + doctor.name
+            + ":\n\n"
             + Messages.getAppointmentsListMessage(patient.getAppointmentsByDoctor(doctor)));
   }
 
@@ -160,8 +184,11 @@ public class Interface {
       }
     }
 
-    JOptionPane.showMessageDialog(null,
-        "Aqui está a lista de consultas marcadas de " + patient.name + ":\n\n"
+    JOptionPane.showMessageDialog(
+        null,
+        "Aqui está a lista de consultas marcadas de "
+            + patient.name
+            + ":\n\n"
             + Messages.getAppointmentsListMessage(patient.getFutureAppointments()));
   }
 
@@ -177,10 +204,17 @@ public class Interface {
         e.show();
       }
     }
-    int months = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a quantidade de meses para filtrar"));
+    int months =
+        Integer.parseInt(
+            JOptionPane.showInputDialog(null, "Digite a quantidade de meses para filtrar"));
 
-    JOptionPane.showMessageDialog(null,
-        "Aqui estão os pacientes que não se consultam com " + doctor.name + " há " + months + " meses:\n\n"
+    JOptionPane.showMessageDialog(
+        null,
+        "Aqui estão os pacientes que não se consultam com "
+            + doctor.name
+            + " há "
+            + months
+            + " meses:\n\n"
             + Messages.getPatientsListMessage(doctor.getMissingPatients(months)));
   }
 
@@ -206,7 +240,12 @@ public class Interface {
       }
     }
     String date = JOptionPane.showInputDialog(null, "Digite a data da consulta");
+    String time = JOptionPane.showInputDialog(null, "Digite o horário da consulta");
 
+    LocalDate dt = LocalDate.parse(date.trim());
+    LocalTime lt = LocalTime.parse(time.trim());
+
+    new Appointment(dt, lt, doctor, patient);
   }
 
   public void start() {

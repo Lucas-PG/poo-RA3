@@ -3,8 +3,7 @@ package Reader;
 import Entities.Appointment;
 import Entities.Doctor;
 import Entities.Patient;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -68,42 +67,59 @@ public class Reader {
       ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
     File appointmentsSer = new File("consultas.ser");
 
-    if (file.exists()) {
+    try {
+      FileReader file = new FileReader(this.appointmentsFile);
+      BufferedReader buffer = new BufferedReader(file);
+      buffer.readLine();
+
+      while (buffer.ready()) {
+        String linha = buffer.readLine();
+        String[] tokens = linha.split(",");
+
+        int doctorCode = Integer.parseInt(tokens[2]);
+        String patientCpf = tokens[3];
+
+        Patient patient = Patient.getPatientByCpf(patientCpf, patients);
+        Doctor doctor = Doctor.getDoctorByCode(doctorCode, doctors);
+
+        Appointment appointment =
+            new Appointment(
+                LocalDate.parse(tokens[0]), LocalTime.parse(tokens[1]), doctor, patient);
+        appointments.add(appointment);
+      }
+
+      buffer.close();
+
+    } catch (Exception e) {
+      System.out.println("Ocorreu um erro ao ler o arquivo das consultas!");
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+    if (appointmentsSer.exists()) {
+      System.out.println("File existe");
       try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(appointmentsSer))) {
-        appointment = (Appointment) ois.readObject();
+        while (true) {
+          try {
+            Appointment newAppointment = (Appointment) ois.readObject();
+            appointments.add(newAppointment);
+            System.out.println(newAppointment);
+            System.out.println(newAppointment.date);
+            System.out.println(newAppointment.patient.name);
+            System.out.println(newAppointment.doctor.code);
+          } catch (EOFException eof) {
+            break;
+          }
+        }
       } catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
       }
-
     } else {
-      try {
-        FileReader file = new FileReader(this.appointmentsFile);
-        BufferedReader buffer = new BufferedReader(file);
-        buffer.readLine();
-
-        while (buffer.ready()) {
-          String linha = buffer.readLine();
-          String[] tokens = linha.split(",");
-
-          int doctorCode = Integer.parseInt(tokens[2]);
-          String patientCpf = tokens[3];
-
-          Patient patient = Patient.getPatientByCpf(patientCpf, patients);
-          Doctor doctor = Doctor.getDoctorByCode(doctorCode, doctors);
-
-          Appointment appointment =
-              new Appointment(
-                  LocalDate.parse(tokens[0]), LocalTime.parse(tokens[1]), doctor, patient);
-          appointments.add(appointment);
-        }
-
-        buffer.close();
-
-      } catch (Exception e) {
-        System.out.println("Ocorreu um erro ao ler o arquivo das consultas!");
-        System.out.println(e.getMessage());
-        e.printStackTrace();
-      }
+      System.out.println("File does not exist or cannot be found");
+    }
+    try {
+      Appointment.saveAll(appointments, "appointments.ser");
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 

@@ -1,9 +1,10 @@
 package Entities;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Doctor {
+public class Doctor implements Serializable {
   public String name;
   public int code;
   private ArrayList<Patient> patients = new ArrayList<Patient>();
@@ -22,10 +23,11 @@ public class Doctor {
     }
 
     return codesList;
-  };
+  }
+  ;
 
   public static Doctor getDoctorByCode(int code, ArrayList<Doctor> doctors) {
-    Doctor doctorToReturn = new Doctor("", 0); 
+    Doctor doctorToReturn = new Doctor("", 0);
 
     for (Doctor doctor : doctors) {
       if (doctor.code == code) {
@@ -44,7 +46,7 @@ public class Doctor {
     return this.patients.contains(patient);
   }
 
-  public void addAppointment(Appointment appointment){
+  public void addAppointment(Appointment appointment) {
     appointments.add(appointment);
   }
 
@@ -64,18 +66,17 @@ public class Doctor {
 
       int smallerDistance = p.appointments.get(0).getMonthDiffFromCurrentDate();
 
-      for(Appointment a: p.appointments){
+      for (Appointment a : p.appointments) {
         int distance = a.getMonthDiffFromCurrentDate();
 
-        if (distance < smallerDistance && distance > 0){
+        if (distance < smallerDistance && distance > 0) {
           smallerDistance = distance;
         }
       }
 
-      if (smallerDistance >= months){
+      if (smallerDistance >= months) {
         missingPatients.add(p);
       }
-    
     }
 
     return missingPatients;
@@ -91,12 +92,12 @@ public class Doctor {
   public ArrayList<Appointment> getAppointmentsByPeriod(LocalDate startDate, LocalDate endDate) {
     ArrayList<Appointment> appointmentsByPeriod = new ArrayList<Appointment>();
 
-    for(Appointment a: appointments){
-    if(startDate.isBefore(a.date) && endDate.isAfter(a.date)){
-    appointmentsByPeriod.add(a);
-    }
+    for (Appointment a : appointments) {
+      if (startDate.isBefore(a.date) && endDate.isAfter(a.date)) {
+        appointmentsByPeriod.add(a);
+      }
     }
     return appointmentsByPeriod;
   }
-
 }
+

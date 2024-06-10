@@ -27,7 +27,7 @@ public class App {
     }
 
     try {
-      Appointment.save("data/consultas/all.yml");
+      Appointment.save("data/consultas/all.yml", appointments);
     } catch (IOException e) {
 
     }

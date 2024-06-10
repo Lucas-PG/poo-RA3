@@ -44,7 +44,7 @@ public class Appointment implements Serializable {
 
   public static void save(String file, ArrayList<Appointment> consultas) throws IOException {
     FileOutputStream arquivo = new FileOutputStream(file);
-    ObjectOutputStream gravador = new ObjectOutputStream(consultas);
+    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
     gravador.writeObject(consultas);
     gravador.close();
     arquivo.close();

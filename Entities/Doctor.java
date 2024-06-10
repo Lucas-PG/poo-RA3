@@ -110,7 +110,7 @@ public class Doctor implements Serializable {
 
   public static void save(String file, ArrayList<Doctor> medicos) throws IOException {
     FileOutputStream arquivo = new FileOutputStream(file);
-    ObjectOutputStream gravador = new ObjectOutputStream(medicos);
+    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
     gravador.writeObject(medicos);
     gravador.close();
     arquivo.close();

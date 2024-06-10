@@ -58,16 +58,11 @@ public class Reader {
   private void readPatients(ArrayList<Patient> patients)
       throws IOException, ClassNotFoundException {
     File patientsSer = new File("data/pacientes/all.ser");
+    String patientsSerStr = "data/pacientes/all.ser";
 
     if (patientsSer.exists()) {
-      ArrayList<Patient> serPatients = new ArrayList<>();
-
-      try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientsSer))) {
-        ArrayList<Patient> serPatient = (ArrayList<Patient>) ois.readObject();
-        patients.addAll(serPatient);
-      } catch (IOException | ClassNotFoundException e) {
-        e.printStackTrace();
-      }
+      patients.addAll(Patient.loadAll(patientsSerStr));
+      System.out.println(patients);
     } else {
       try {
         FileReader file = new FileReader(this.patientsFile);

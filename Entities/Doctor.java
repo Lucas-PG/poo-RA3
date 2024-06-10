@@ -108,9 +108,9 @@ public class Doctor implements Serializable {
     return appointmentsByPeriod;
   }
 
-  public void save(String file) throws IOException {
+  public static void save(String file, ArrayList<Doctor> medicos) throws IOException {
     FileOutputStream arquivo = new FileOutputStream(file);
-    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+    ObjectOutputStream gravador = new ObjectOutputStream(medicos);
     gravador.writeObject(allDoctors);
     gravador.close();
     arquivo.close();

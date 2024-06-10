@@ -16,10 +16,6 @@ public class Patient implements Serializable {
     this.cpf = cpf;
     this.appointments = new ArrayList<Appointment>();
     allPatients.add(this);
-    try {
-      save("data/pacientes/all.ser");
-    } catch (IOException e) {
-    }
   }
 
   public static ArrayList<String> getAvailableCpfs(ArrayList<Patient> patients) {
@@ -97,10 +93,10 @@ public class Patient implements Serializable {
     appointments.add(appointment);
   }
 
-  public void save(String file) throws IOException {
+  public static void save(String file, ArrayList<Patient> pacientes) throws IOException {
     FileOutputStream arquivo = new FileOutputStream(file);
     ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-    gravador.writeObject(allPatients);
+    gravador.writeObject(pacientes);
     gravador.close();
     arquivo.close();
   }
@@ -111,5 +107,12 @@ public class Patient implements Serializable {
     gravador.writeObject(appointments);
     gravador.close();
     arquivo.close();
+  }
+
+  public static ArrayList<Patient> loadAll(String file) throws IOException, ClassNotFoundException {
+    try (FileInputStream arquivo = new FileInputStream(file);
+        ObjectInputStream leitor = new ObjectInputStream(arquivo)) {
+      return (ArrayList<Patient>) leitor.readObject();
+    }
   }
 }

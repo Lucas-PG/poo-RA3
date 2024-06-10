@@ -1,10 +1,11 @@
 package Entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 
-public class Appointment {
+public class Appointment implements Serializable {
   public LocalDate date;
   public LocalTime time;
   public Doctor doctor;
@@ -23,7 +24,7 @@ public class Appointment {
     }
   }
 
-  public int getMonthDiffFromCurrentDate(){
+  public int getMonthDiffFromCurrentDate() {
     LocalDate currentDate = LocalDate.now();
 
     Period period = Period.between(date, currentDate);
@@ -31,5 +32,4 @@ public class Appointment {
 
     return distanceMonths;
   }
-
 }

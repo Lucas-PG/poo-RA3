@@ -16,6 +16,7 @@ public class Doctor implements Serializable {
     this.name = name;
     this.code = code;
 
+    allDoctors.add(this);
     try {
       save("data/medicos/all.ser");
     } catch (IOException e) {

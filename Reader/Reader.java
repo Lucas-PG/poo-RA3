@@ -24,19 +24,10 @@ public class Reader {
     File doctorSer = new File("data/medicos/all.ser");
 
     if (doctorSer.exists()) {
-      ArrayList<Doctor> serDoctors = new ArrayList<>();
 
-      try (FileInputStream fileIn = new FileInputStream(doctorSer);
-          ObjectInputStream in = new ObjectInputStream(fileIn)) {
-
-        while (true) {
-          try {
-            Doctor doctor = (Doctor) in.readObject();
-            serDoctors.add(doctor);
-          } catch (EOFException e) {
-            break; // End of file reached
-          }
-        }
+      try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(doctorSer))) {
+        ArrayList<Doctor> serDoctors = (ArrayList<Doctor>) ois.readObject();
+        doctors.addAll(serDoctors);
       } catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
       }
@@ -66,29 +57,16 @@ public class Reader {
 
   private void readPatients(ArrayList<Patient> patients)
       throws IOException, ClassNotFoundException {
-    File patientSer = new File("data/pacientes/all.ser");
+    File patientsSer = new File("data/pacientes/all.ser");
 
-    if (patientSer.exists()) {
+    if (patientsSer.exists()) {
       ArrayList<Patient> serPatients = new ArrayList<>();
 
-      try (FileInputStream fileIn = new FileInputStream(patientSer);
-          ObjectInputStream in = new ObjectInputStream(fileIn)) {
-
-        while (true) {
-          try {
-            Patient patient = (Patient) in.readObject();
-            serPatients.add(patient);
-          } catch (EOFException e) {
-            break; // End of file reached
-          }
-        }
+      try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientsSer))) {
+        ArrayList<Patient> serPatient = (ArrayList<Patient>) ois.readObject();
+        patients.addAll(serPatient);
       } catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
-      }
-
-      // Now you can use the list of deserialized patients
-      for (Patient patient : serPatients) {
-        System.out.println(patient);
       }
     } else {
       try {

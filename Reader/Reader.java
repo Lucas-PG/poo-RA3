@@ -64,62 +64,62 @@ public class Reader {
   }
 
   private void readAppointments(
-      ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
-    File appointmentsSer = new File("consultas.ser");
+      ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
+      throws IOException, ClassNotFoundException {
+    File appointmentsSer = new File("data/Andre.ser");
 
-    try {
-      FileReader file = new FileReader(this.appointmentsFile);
-      BufferedReader buffer = new BufferedReader(file);
-      buffer.readLine();
+    ArrayList<Appointment> appointmentsList = new ArrayList<>();
 
-      while (buffer.ready()) {
-        String linha = buffer.readLine();
-        String[] tokens = linha.split(",");
-
-        int doctorCode = Integer.parseInt(tokens[2]);
-        String patientCpf = tokens[3];
-
-        Patient patient = Patient.getPatientByCpf(patientCpf, patients);
-        Doctor doctor = Doctor.getDoctorByCode(doctorCode, doctors);
-
-        Appointment appointment =
-            new Appointment(
-                LocalDate.parse(tokens[0]), LocalTime.parse(tokens[1]), doctor, patient);
-        appointments.add(appointment);
-      }
-
-      buffer.close();
-
-    } catch (Exception e) {
-      System.out.println("Ocorreu um erro ao ler o arquivo das consultas!");
-      System.out.println(e.getMessage());
-      e.printStackTrace();
-    }
     if (appointmentsSer.exists()) {
       System.out.println("File existe");
-      try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(appointmentsSer))) {
-        while (true) {
-          try {
-            Appointment newAppointment = (Appointment) ois.readObject();
-            appointments.add(newAppointment);
-            System.out.println(newAppointment);
-            System.out.println(newAppointment.date);
-            System.out.println(newAppointment.patient.name);
-            System.out.println(newAppointment.doctor.code);
+      for (Patient patient : patients) {
+        String patientFileName = "data/" + patient.name + ".ser";
+        File patientFile = new File(patientFileName);
+
+        if (patientFile.exists()) {
+          System.out.println("File exists for patient: " + patient.name);
+          try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(patientFile))) {
+            ArrayList<Appointment> patientAppointments = (ArrayList<Appointment>) ois.readObject();
+            appointments.addAll(patientAppointments);
+
+            for (Appointment a : patientAppointments) {
+              patient.addAppointment(a);
+            }
           } catch (EOFException eof) {
-            break;
+          } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
           }
         }
-      } catch (IOException | ClassNotFoundException e) {
-        e.printStackTrace();
       }
     } else {
-      System.out.println("File does not exist or cannot be found");
-    }
-    try {
-      Appointment.saveAll(appointments, "appointments.ser");
-    } catch (IOException e) {
-      e.printStackTrace();
+      try {
+        FileReader file = new FileReader(this.appointmentsFile);
+        BufferedReader buffer = new BufferedReader(file);
+        buffer.readLine();
+
+        while (buffer.ready()) {
+          String linha = buffer.readLine();
+          String[] tokens = linha.split(",");
+
+          int doctorCode = Integer.parseInt(tokens[2]);
+          String patientCpf = tokens[3];
+
+          Patient patient = Patient.getPatientByCpf(patientCpf, patients);
+          Doctor doctor = Doctor.getDoctorByCode(doctorCode, doctors);
+
+          Appointment appointment =
+              new Appointment(
+                  LocalDate.parse(tokens[0]), LocalTime.parse(tokens[1]), doctor, patient);
+          appointments.add(appointment);
+        }
+
+        buffer.close();
+
+      } catch (Exception e) {
+        System.out.println("Ocorreu um erro ao ler o arquivo das consultas!");
+        System.out.println(e.getMessage());
+        e.printStackTrace();
+      }
     }
   }
 
@@ -127,6 +127,9 @@ public class Reader {
       ArrayList<Doctor> doctors, ArrayList<Patient> patients, ArrayList<Appointment> appointments) {
     this.readPatients(patients);
     this.readDoctors(doctors);
-    readAppointments(appointments, patients, doctors);
+    try {
+      readAppointments(appointments, patients, doctors);
+    } catch (IOException | ClassNotFoundException e) {
+    }
   }
 }

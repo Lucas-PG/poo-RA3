@@ -90,4 +90,12 @@ public class Patient implements Serializable {
   public void addAppointment(Appointment appointment) {
     appointments.add(appointment);
   }
+
+  public void save(String file) throws IOException {
+    FileOutputStream arquivo = new FileOutputStream(file);
+    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+    gravador.writeObject(appointments);
+    gravador.close();
+    arquivo.close();
+  }
 }

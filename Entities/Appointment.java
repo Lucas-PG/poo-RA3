@@ -25,7 +25,7 @@ public class Appointment implements Serializable {
     }
 
     try {
-      save("consultas.ser");
+      patient.save("data/" + patient.name + ".ser");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -38,13 +38,5 @@ public class Appointment implements Serializable {
     int distanceMonths = period.getYears() * 12 + period.getMonths();
 
     return distanceMonths;
-  }
-
-  public void save(String file) throws IOException {
-    FileOutputStream arquivo = new FileOutputStream(file);
-    ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-    gravador.writeObject(this);
-    gravador.close();
-    arquivo.close();
   }
 }

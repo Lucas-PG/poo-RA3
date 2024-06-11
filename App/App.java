@@ -26,6 +26,7 @@ public class App {
     } catch (IOException | ClassNotFoundException e) {
 
     }
+
     for (Doctor d : doctors) {
       System.out.println(d.name);
     }

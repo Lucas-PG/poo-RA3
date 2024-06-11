@@ -19,9 +19,8 @@ public class Reader {
     this.appointmentsFile = appointmentsFile;
   }
 
-  public ArrayList<Doctor> readDoctors(ArrayList<Doctor> doctors) throws IOException, ClassNotFoundException {
-
-    boolean doctorsSerRead = false;
+  public ArrayList<Doctor> readDoctorsSer(ArrayList<Doctor> doctors, boolean doctorsSerRead)
+      throws IOException, ClassNotFoundException {
     final String DOCTORS_FILE = "data/medicos/all.ser";
     try {
       doctors = Doctor.loadAll(DOCTORS_FILE);
@@ -33,6 +32,14 @@ public class Reader {
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos médicos: " + e.getMessage());
     }
+
+    return doctors;
+  }
+
+  public ArrayList<Doctor> readDoctors(ArrayList<Doctor> doctors) throws IOException, ClassNotFoundException {
+
+    boolean doctorsSerRead = false;
+    readDoctorsSer(doctors, doctorsSerRead);
 
     if (!doctorsSerRead) {
       try {
@@ -59,9 +66,8 @@ public class Reader {
     return doctors;
   }
 
-  public ArrayList<Patient> readPatients(ArrayList<Patient> patients)
+  public ArrayList<Patient> readPatientsSer(ArrayList<Patient> patients, boolean patientsSerRead)
       throws IOException, ClassNotFoundException {
-    boolean patientsSerRead = false;
     final String PATIENTS_FILE = "data/pacientes/all.ser";
 
     try {
@@ -75,6 +81,14 @@ public class Reader {
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());
     }
+
+    return patients;
+  }
+
+  public ArrayList<Patient> readPatients(ArrayList<Patient> patients)
+      throws IOException, ClassNotFoundException {
+    boolean patientsSerRead = false;
+    readPatientsSer(patients, patientsSerRead);
 
     if (!patientsSerRead) {
       try {
@@ -100,11 +114,10 @@ public class Reader {
     return patients;
   }
 
-  public ArrayList<Appointment> readAppointments(
-      ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
+  public ArrayList<Appointment> readAppointmentsSer(
+      ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors,
+      boolean appointmentsSerRead)
       throws IOException, ClassNotFoundException {
-
-    boolean appointmentsSerRead = false;
     final String APPOINTMENTS_FILE = "data/consultas/all.ser";
 
     try {
@@ -114,6 +127,16 @@ public class Reader {
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());
     }
+
+    return appointments;
+  }
+
+  public ArrayList<Appointment> readAppointments(
+      ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
+      throws IOException, ClassNotFoundException {
+
+    boolean appointmentsSerRead = false;
+    readAppointmentsSer(appointments, patients, doctors, appointmentsSerRead);
 
     if (!appointmentsSerRead) {
       try {

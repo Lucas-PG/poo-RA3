@@ -26,9 +26,9 @@ public class App {
     } catch (IOException | ClassNotFoundException e) {
 
     }
-    for (Doctor d : doctors) {
-      System.out.println(d.name);
-    }
+    // for (Doctor d : doctors) {
+    // System.out.println(d.name);
+    // }
 
     // for (Appointment p : appointments) {
     // System.out.println("APPOINTMENT DATE:" + p.date + "PATIENT" + p.patient.name

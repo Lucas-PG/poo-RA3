@@ -250,11 +250,10 @@ public class Interface {
 
     Appointment appointment = new Appointment(dt, lt, doctor, patient);
     appointments.add(appointment);
-    System.out.println("PACIENTE X" + patient.name);
-    patient.addAppointment(appointment);
 
     try {
       Appointment.save("data/consultas/all.ser", appointments);
+      Patient.save("data/pacientes/all.ser", patients);
     } catch (IOException e) {
 
     }

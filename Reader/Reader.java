@@ -25,9 +25,9 @@ public class Reader {
     try {
       doctors = Doctor.loadAll(DOCTORS_FILE);
       doctorsSerRead = true;
-      System.out.println("Lido arquivo doctors");
-      System.out.println(doctors);
-      System.out.println(Doctor.loadAll(DOCTORS_FILE));
+      // System.out.println("Lido arquivo doctors");
+      // System.out.println(doctors);
+      // System.out.println(Doctor.loadAll(DOCTORS_FILE));
       return doctors;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos médicos: " + e.getMessage());
@@ -73,10 +73,10 @@ public class Reader {
     try {
       patients = Patient.loadAll(PATIENTS_FILE);
       patientsSerRead = true;
-      System.out.println("Lido arquivo patients");
-      for (Patient p : patients) {
-        System.out.println(p.name);
-      }
+      // System.out.println("Lido arquivo patients");
+      // for (Patient p : patients) {
+      // System.out.println(p.name);
+      // }
       return patients;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());

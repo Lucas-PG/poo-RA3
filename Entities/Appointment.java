@@ -39,9 +39,6 @@ public class Appointment implements Serializable {
   public static void save(String file, ArrayList<Appointment> consultas) throws IOException {
     try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
       oos.writeObject(consultas);
-      // for (Appointment a : consultas) {
-      // System.out.println(a.date);
-      // }
     }
   }
 

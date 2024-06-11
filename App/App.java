@@ -26,26 +26,6 @@ public class App {
     } catch (IOException | ClassNotFoundException e) {
 
     }
-    // for (Doctor d : doctors) {
-    // System.out.println(d.name);
-    // }
-
-    // for (Appointment p : appointments) {
-    // System.out.println("APPOINTMENT DATE:" + p.date + "PATIENT" + p.patient.name
-    // + "CPF" + p.patient.cpf);
-    // }
-
-    // for (Patient p : patients) {
-    // System.out.println(p.name);
-    // }
-
-    // for (Appointment a : Patient.getPatientByCpf("00000000000",
-    // patients).appointments) {
-    // System.out.println("ANDRE:" + a.date);
-    // }
-
-    // System.out.println("NOME: " + Patient.getPatientByCpf("00000000000",
-    // patients).name);
 
     try {
       Patient.save("data/pacientes/all.ser", patients);

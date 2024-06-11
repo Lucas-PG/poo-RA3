@@ -19,14 +19,17 @@ public class Reader {
     this.appointmentsFile = appointmentsFile;
   }
 
-  private void readDoctors(ArrayList<Doctor> doctors) throws IOException, ClassNotFoundException {
+  public ArrayList<Doctor> readDoctors(ArrayList<Doctor> doctors) throws IOException, ClassNotFoundException {
 
     boolean doctorsSerRead = false;
     final String DOCTORS_FILE = "data/medicos/all.ser";
-
     try {
       doctors = Doctor.loadAll(DOCTORS_FILE);
       doctorsSerRead = true;
+      System.out.println("Lido arquivo doctors");
+      System.out.println(doctors);
+      System.out.println(Doctor.loadAll(DOCTORS_FILE));
+      return doctors;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos médicos: " + e.getMessage());
     }
@@ -52,9 +55,11 @@ public class Reader {
         System.out.println(e.getMessage());
       }
     }
+
+    return doctors;
   }
 
-  private void readPatients(ArrayList<Patient> patients)
+  public ArrayList<Patient> readPatients(ArrayList<Patient> patients)
       throws IOException, ClassNotFoundException {
     boolean patientsSerRead = false;
     final String PATIENTS_FILE = "data/pacientes/all.ser";
@@ -62,6 +67,11 @@ public class Reader {
     try {
       patients = Patient.loadAll(PATIENTS_FILE);
       patientsSerRead = true;
+      System.out.println("Lido arquivo patients");
+      for (Patient p : patients) {
+        System.out.println(p.name);
+      }
+      return patients;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());
     }
@@ -87,9 +97,10 @@ public class Reader {
         System.out.println(e.getMessage());
       }
     }
+    return patients;
   }
 
-  private void readAppointments(
+  public ArrayList<Appointment> readAppointments(
       ArrayList<Appointment> appointments, ArrayList<Patient> patients, ArrayList<Doctor> doctors)
       throws IOException, ClassNotFoundException {
 
@@ -99,6 +110,7 @@ public class Reader {
     try {
       appointments = Appointment.loadAll(APPOINTMENTS_FILE);
       appointmentsSerRead = true;
+      return appointments;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("Erro ao carregar dados .ser dos pacientes: " + e.getMessage());
     }
@@ -132,19 +144,19 @@ public class Reader {
         e.printStackTrace();
       }
     }
+    return appointments;
   }
 
   public void read(
       ArrayList<Doctor> doctors, ArrayList<Patient> patients, ArrayList<Appointment> appointments) {
     try {
 
-      this.readDoctors(doctors);
+      doctors = this.readDoctors(doctors);
     } catch (IOException | ClassNotFoundException e) {
 
     }
     try {
-
-      this.readPatients(patients);
+      patients = this.readPatients(patients);
     } catch (IOException | ClassNotFoundException e) {
 
     }

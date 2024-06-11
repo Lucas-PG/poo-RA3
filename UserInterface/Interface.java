@@ -5,6 +5,9 @@ import Entities.Doctor;
 import Entities.Patient;
 import Exceptions.IllegalOption;
 import Exceptions.IncorrectType;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,10 +17,12 @@ import javax.swing.*;
 public class Interface {
   private ArrayList<Doctor> doctors;
   private ArrayList<Patient> patients;
+  private ArrayList<Appointment> appointments;
 
-  public Interface(ArrayList<Doctor> doctors, ArrayList<Patient> patients) {
+  public Interface(ArrayList<Doctor> doctors, ArrayList<Patient> patients, ArrayList<Appointment> appointments) {
     this.doctors = doctors;
     this.patients = patients;
+    this.appointments = appointments;
   }
 
   private Doctor getDoctor(ArrayList<Doctor> doctors) throws IncorrectType, IllegalOption {
@@ -26,9 +31,8 @@ public class Interface {
     ArrayList<Integer> availableCodes = Doctor.getAvailableDoctorCodes(doctors);
 
     try {
-      chosenOption =
-          Integer.parseInt(
-              JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
+      chosenOption = Integer.parseInt(
+          JOptionPane.showInputDialog(null, "Digite o código do médico" + message));
     } catch (Exception e) {
       throw new IncorrectType("Tipo inválido");
     }
@@ -58,8 +62,7 @@ public class Interface {
     int chosenOption = -1;
 
     try {
-      chosenOption =
-          Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
+      chosenOption = Integer.parseInt(JOptionPane.showInputDialog(null, Messages.getChoicesMessage()));
     } catch (Exception e) {
       throw new IncorrectType("Tipo inválido");
     }
@@ -204,9 +207,8 @@ public class Interface {
         e.show();
       }
     }
-    int months =
-        Integer.parseInt(
-            JOptionPane.showInputDialog(null, "Digite a quantidade de meses para filtrar"));
+    int months = Integer.parseInt(
+        JOptionPane.showInputDialog(null, "Digite a quantidade de meses para filtrar"));
 
     JOptionPane.showMessageDialog(
         null,
@@ -218,7 +220,8 @@ public class Interface {
             + Messages.getPatientsListMessage(doctor.getMissingPatients(months)));
   }
 
-  private void seventhOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors) {
+  private void seventhOption(ArrayList<Patient> patients, ArrayList<Doctor> doctors,
+      ArrayList<Appointment> appointments) {
     Patient patient = new Patient("", "");
 
     while (patient.name == "") {
@@ -245,7 +248,16 @@ public class Interface {
     LocalDate dt = LocalDate.parse(date.trim());
     LocalTime lt = LocalTime.parse(time.trim());
 
-    new Appointment(dt, lt, doctor, patient);
+    Appointment appointment = new Appointment(dt, lt, doctor, patient);
+    appointments.add(appointment);
+    System.out.println("PACIENTE X" + patient.name);
+    patient.addAppointment(appointment);
+
+    try {
+      Appointment.save("data/consultas/all.ser", appointments);
+    } catch (IOException e) {
+
+    }
   }
 
   public void start() {
@@ -282,7 +294,7 @@ public class Interface {
           this.sixthOption(doctors);
           break;
         case 7:
-          this.seventhOption(patients, doctors);
+          this.seventhOption(patients, doctors, appointments);
           break;
         case 8:
           JOptionPane.showMessageDialog(null, "Obrigado por utilizar nosso sistema!");

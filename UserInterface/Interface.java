@@ -242,18 +242,27 @@ public class Interface {
         e.show();
       }
     }
-    String date = JOptionPane.showInputDialog(null, "Digite a data da consulta");
-    String time = JOptionPane.showInputDialog(null, "Digite o horário da consulta");
+    LocalDate dt = LocalDate.parse("0000-01-01");
+    LocalTime lt = LocalTime.parse("00:00:00");
+    try {
+      while (dt == LocalDate.parse("0000-01-01") | lt == LocalTime.parse("00:00:00")) {
+        String date = JOptionPane.showInputDialog(null, "Digite a data da consulta");
+        String time = JOptionPane.showInputDialog(null, "Digite o horário da consulta");
 
-    LocalDate dt = LocalDate.parse(date.trim());
-    LocalTime lt = LocalTime.parse(time.trim());
+        dt = LocalDate.parse(date.trim());
+        lt = LocalTime.parse(time.trim());
 
-    Appointment appointment = new Appointment(dt, lt, doctor, patient);
-    appointments.add(appointment);
+        Appointment appointment = new Appointment(dt, lt, doctor, patient);
+        appointments.add(appointment);
+      }
+
+    } catch (Exception e) {
+    }
 
     try {
       Appointment.save("data/consultas/all.ser", appointments);
       Patient.save("data/pacientes/all.ser", patients);
+      Doctor.save("data/medicos/all.ser", doctors);
     } catch (IOException e) {
 
     }

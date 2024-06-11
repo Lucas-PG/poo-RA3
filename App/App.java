@@ -36,9 +36,9 @@ public class App {
     // + "CPF" + p.patient.cpf);
     // }
 
-    // for (Patient p : patients) {
-    // System.out.println(p.name);
-    // }
+    for (Patient p : patients) {
+      System.out.println(p.name);
+    }
 
     // for (Appointment a : Patient.getPatientByCpf("00000000000",
     // patients).appointments) {

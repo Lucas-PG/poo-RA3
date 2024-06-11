@@ -26,16 +26,10 @@ public class App {
     } catch (IOException | ClassNotFoundException e) {
 
     }
-<<<<<<< HEAD
 
     for (Doctor d : doctors) {
       System.out.println(d.name);
     }
-=======
-    // for (Doctor d : doctors) {
-    // System.out.println(d.name);
-    // }
->>>>>>> a4cafcaa4f7c3001b01c5583e4cc5e84274806f8
 
     // for (Appointment p : appointments) {
     // System.out.println("APPOINTMENT DATE:" + p.date + "PATIENT" + p.patient.name
